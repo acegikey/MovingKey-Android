@@ -11,17 +11,25 @@
 
         >
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Preview (balloon view)"
             android:layout_centerVertical="true"
             />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#979797"
-            android:layout_alignParentBottom="true"
+
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:text="When double tab the shift key"
+            android:textSize="9sp"
+            android:textColor="#4188c7"
+            android:visibility="gone"
             />
+
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -31,5 +39,12 @@
             android:layout_centerVertical="true"
             />
 
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="#979797"
+            android:layout_alignParentBottom="true"
+            />
     </RelativeLayout>
 </RelativeLayout>
