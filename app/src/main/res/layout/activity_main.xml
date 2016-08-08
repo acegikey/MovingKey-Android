@@ -76,12 +76,15 @@
 
 
                     <include
+                        android:id="@+id/menu01_lang"
                         layout="@layout/list_item_main01"
                         />
                     <include
+                        android:id="@+id/menu02_auto"
                         layout="@layout/list_item_main01"
                         />
                     <include
+                        android:id="@+id/menu03_memo"
                         layout="@layout/list_item_main01"
                         />
 
@@ -134,12 +137,15 @@
 
 
                     <include
+                        android:id="@+id/menu01_theme"
                         layout="@layout/list_item_main01"
                         />
                     <include
+                        android:id="@+id/menu02_Prev"
                         layout="@layout/list_item_main02"
                         />
                     <include
+                        android:id="@+id/menu03_keyboardSize"
                         layout="@layout/list_item_main03"
                         />
 
@@ -193,12 +199,15 @@
 
 
                     <include
+                        android:id="@+id/menu01_capsLock"
                         layout="@layout/list_item_main02"
                         />
                     <include
+                        android:id="@+id/menu02_automatic_caps"
                         layout="@layout/list_item_main02"
                         />
                     <include
+                        android:id="@+id/menu03_aboutLicense"
                         layout="@layout/list_item_main02"
                         />
 

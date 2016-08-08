@@ -11,6 +11,7 @@
 
         >
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="keyboard size"
@@ -62,7 +63,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="1dp"
             android:background="#979797"
             android:layout_alignParentBottom="true"
             />
