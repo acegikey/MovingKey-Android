@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.movingkey.android.movingkey.activitys.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="#4188c7"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:text="Setting"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/settingsContainer"
+        android:layout_below="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <RelativeLayout
+            android:id="@+id/settingTop"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/rectangle"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Settings"
+                android:textColor="#4188c7"
+                android:layout_marginLeft="16dp"
+                android:textSize="14sp"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/settingTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginRight="38dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            >
+
+
+
+            <include
+                layout="@layout/list_item_main01"
+                />
+            <include
+                layout="@layout/list_item_main01"
+                />
+            <include
+                layout="@layout/list_item_main01"
+                />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/uiContainer"
+        android:layout_below="@+id/settingsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+
+        <RelativeLayout
+            android:id="@+id/uiTop"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/rectangle"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Settings"
+                android:textColor="#4188c7"
+                android:layout_marginLeft="16dp"
+                android:textSize="14sp"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/uiTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="38dp"
+            android:layout_marginRight="38dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical"
+            >
+
+
+
+            <include
+                layout="@layout/list_item_main01"
+                />
+            <include
+                layout="@layout/list_item_main02"
+                />
+            <include
+                layout="@layout/list_item_main03"
+                />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
