@@ -16,6 +16,8 @@ import java.util.ArrayList;
  */
 public class MovingKeyLib
 {
+
+
     private static MovingKeyLib sharedInstance;
 
     private MovingKeySetting settingInMemory;
@@ -38,9 +40,10 @@ public class MovingKeyLib
 
 
 
+    /// 키보드의 셋팅값들을 파일로 부터 가져와서 메모리에 할당한다
     public void func02_loadMovingKeySettingFromFileAndLoadMemory(Context context)
     {
-        SharedPreferences pref = context.getSharedPreferences("MovingKey",Context.MODE_PRIVATE);
+
 
 
 
@@ -48,8 +51,8 @@ public class MovingKeyLib
         /// 사용자의 설정이 전혀 없을 경우 디폴트값으로 지정할 디폴트 객제 생성
         MovingKeySetting defaultSettingGroup = new MovingKeySetting();
         defaultSettingGroup.setting01_lastSelectedLang = "en";
-        defaultSettingGroup.setting02_lastSelectedLayout = "qwerty";
-        defaultSettingGroup.setting03_lastSelectedDesign = "default";
+        defaultSettingGroup.setting02_lastSelectedLayout = Const.LAYOUT_QWERTY;
+        defaultSettingGroup.setting03_lastSelectedDesign = Const.SKIN_DEFALT;
 
         defaultSettingGroup.setting04_selectedSetGroup = new ArrayList<LangAndLayout>();
 
@@ -57,15 +60,16 @@ public class MovingKeyLib
 
         LangAndLayout defalutLangAndLayout = new LangAndLayout();
         defalutLangAndLayout.language = "en";
-        defalutLangAndLayout.layout = "qwerty";
+        defalutLangAndLayout.layout = Const.LAYOUT_QWERTY;
 
         defaultSettingGroup.setting04_selectedSetGroup.add(defalutLangAndLayout);
 
 
 
-        defaultSettingGroup.setting05_isBalloonViewShow = "YES";
-        defaultSettingGroup.setting06_keyboardSize = "Medium";
-        defaultSettingGroup.setting07_capsLockActiveState = "YES";
+        defaultSettingGroup.setting05_isBalloonViewShow = Const.BOOL_YES;
+        defaultSettingGroup.setting06_keyboardSize = Const.KEYBOARD_SIZE_LARGE;
+        defaultSettingGroup.setting07_capsLockActiveState = Const.BOOL_YES;
+        defaultSettingGroup.setting08_autoCapActiveState = Const.BOOL_YES;
 
 
 
@@ -76,21 +80,33 @@ public class MovingKeyLib
 
 
 
+
+
+
+
+
+        /// 사용자가 저장한 마지막 선택 언어와 레이아웃을 가져온다 --> 만약에 아무것도 없을 경우 기본은 ( 영어 , QWERTY, 디폴트 디자인 ) 으로 한다.
+
+        SharedPreferences pref = context.getSharedPreferences("MovingKey",Context.MODE_PRIVATE);
+        String setting01_lastSelectedLang = pref.getString("setting01_lastSelectedLang",defaultSettingGroup.setting01_lastSelectedLang);
+        String setting02_lastSelectedLayout = pref.getString("setting02_lastSelectedLayout",defaultSettingGroup.setting02_lastSelectedLayout);
+        String setting03_lastSelectedDesign = pref.getString("setting03_lastSelectedDesign",defaultSettingGroup.setting03_lastSelectedDesign);
 
         Gson gson = new Gson();
         String jsonString_setting04_selectedSetGroup = gson.toJson(defaultSettingGroup.setting04_selectedSetGroup);
 
-
-        /// 사용자가 저장한 마지막 선택 언어와 레이아웃을 가져온다 --> 만약에 아무것도 없을 경우 기본은 ( 영어 , QWERTY, 디폴트 디자인 ) 으로 한다.
-        String setting01_lastSelectedLang = pref.getString("setting01_lastSelectedLang",defaultSettingGroup.setting01_lastSelectedLang);
-        String setting02_lastSelectedLayout = pref.getString("setting02_lastSelectedLayout",defaultSettingGroup.setting02_lastSelectedLayout);
-        String setting03_lastSelectedDesign = pref.getString("setting03_lastSelectedDesign",defaultSettingGroup.setting03_lastSelectedDesign);
         String setting04_selectedSetGroup = pref.getString("setting04_selectedSetGroup",jsonString_setting04_selectedSetGroup);
         String setting05_isBalloonViewShow = pref.getString("setting05_isBalloonViewShow",defaultSettingGroup.setting05_isBalloonViewShow);
         String setting06_keyboardSize = pref.getString("setting06_keyboardSize",defaultSettingGroup.setting06_keyboardSize);
         String setting07_capsLockActiveState = pref.getString("setting07_capsLockActiveState",defaultSettingGroup.setting07_capsLockActiveState);
+        String setting08_autoCapActiveState = pref.getString("setting08_autoCapActiveState",defaultSettingGroup.setting08_autoCapActiveState);
 
         Type collectionType = new TypeToken<ArrayList<LangAndLayout>>(){}.getType();
+
+
+
+
+
 
 
 
@@ -103,10 +119,13 @@ public class MovingKeyLib
         settingInMemory.setting05_isBalloonViewShow = setting05_isBalloonViewShow;
         settingInMemory.setting06_keyboardSize = setting06_keyboardSize;
         settingInMemory.setting07_capsLockActiveState = setting07_capsLockActiveState;
+        settingInMemory.setting08_autoCapActiveState = setting08_autoCapActiveState;
+
 
     }
 
 
+    /// 메모리에 저장된 설정값을 파일로 저장한다.
     public void func03_saveCurrentMemorySettingToFile(Context context)
     {
         if(settingInMemory != null && settingInMemory.setting01_lastSelectedLang != null)
@@ -120,7 +139,15 @@ public class MovingKeyLib
             Gson gson = new Gson();
             String jsonString_setting04_selectedSetGroup = gson.toJson(settingInMemory.setting04_selectedSetGroup);
 
-            editor.putString("setting01_lastSelectedLang",jsonString_setting04_selectedSetGroup);
+            editor.putString("setting04_selectedSetGroup",jsonString_setting04_selectedSetGroup);
+
+
+            editor.putString("setting05_isBalloonViewShow",settingInMemory.setting05_isBalloonViewShow);
+            editor.putString("setting06_keyboardSize",settingInMemory.setting06_keyboardSize);
+            editor.putString("setting07_capsLockActiveState",settingInMemory.setting07_capsLockActiveState);
+            editor.putString("setting08_autoCapActiveState",settingInMemory.setting08_autoCapActiveState);
+
+
 
             editor.commit();
         }
@@ -146,7 +173,7 @@ public class MovingKeyLib
 
     public void func04_setKeyboardBalloonViewIsShow(Context context, boolean isShow)
     {
-        settingInMemory.setting05_isBalloonViewShow = isShow ? "YES": "NO";
+        settingInMemory.setting05_isBalloonViewShow = isShow ? Const.BOOL_YES: Const.BOOL_NO;
 
         func03_saveCurrentMemorySettingToFile(context);
 
@@ -158,15 +185,15 @@ public class MovingKeyLib
     {
         if(settingInMemory != null)
         {
-            if("Small".equals(settingInMemory.setting06_keyboardSize))
+            if(Const.KEYBOARD_SIZE_SMALL.equals(settingInMemory.setting06_keyboardSize))
             {
                 return 0;
             }
-            else if("Medium".equals(settingInMemory.setting06_keyboardSize))
+            else if(Const.KEYBOARD_SIZE_MEDIUM.equals(settingInMemory.setting06_keyboardSize))
             {
                 return 1;
             }
-            else if("Large".equals(settingInMemory.setting06_keyboardSize))
+            else if(Const.KEYBOARD_SIZE_LARGE.equals(settingInMemory.setting06_keyboardSize))
             {
                 return 2;
             }
@@ -174,7 +201,7 @@ public class MovingKeyLib
         }
         else
         {
-            Toast.makeText(context,"키보드의 사이즈(대/중/소) 여부를 가져오는데 실패했습니다. ",Toast.LENGTH_SHORT).show();
+            Log.e("HWI","키보드의 사이즈(대/중/소) 여부를 가져오는데 실패했습니다. ");
             return 0;
         }
 
@@ -188,15 +215,15 @@ public class MovingKeyLib
         String valueString = "";
         if(value == 0)
         {
-            valueString = "Small";
+            valueString = Const.KEYBOARD_SIZE_SMALL;
         }
         else if(value == 1)
         {
-            valueString = "Medium";
+            valueString = Const.KEYBOARD_SIZE_MEDIUM;
         }
         else if(value == 2)
         {
-            valueString = "Large";
+            valueString = Const.KEYBOARD_SIZE_LARGE;
         }
         else if(value > 3 || value < 0)
         {
@@ -224,7 +251,7 @@ public class MovingKeyLib
     {
         if(settingInMemory != null)
         {
-            return "YES".equals(settingInMemory.setting07_capsLockActiveState);
+            return Const.BOOL_YES.equals(settingInMemory.setting07_capsLockActiveState);
         }
         else
         {
@@ -237,7 +264,7 @@ public class MovingKeyLib
     {
         if(settingInMemory != null)
         {
-            settingInMemory.setting07_capsLockActiveState = isCaps ? "YES": "NO";
+            settingInMemory.setting07_capsLockActiveState = isCaps ?  Const.BOOL_YES: Const.BOOL_NO;
 
             func03_saveCurrentMemorySettingToFile(context);
 
@@ -249,4 +276,34 @@ public class MovingKeyLib
     }
 
 
+
+
+
+    public boolean func07_getAutoCapActiveState()
+    {
+        if(settingInMemory != null)
+        {
+            return Const.BOOL_YES.equals(settingInMemory.setting08_autoCapActiveState);
+        }
+        else
+        {
+            Log.e("HWi","CapsLock 활성상태 불러 오기 중 문제 발생!!!!---->  디버깅 필요");
+            return true;
+        }
+    }
+
+    public void func07_setAutoCapActiveState(Context context, boolean isAutoCap)
+    {
+        if(settingInMemory != null)
+        {
+            settingInMemory.setting08_autoCapActiveState = isAutoCap ? Const.BOOL_YES: Const.BOOL_NO;
+
+            func03_saveCurrentMemorySettingToFile(context);
+
+        }
+        else
+        {
+            Log.e("HWi","Auto Cap 활성상태 저장 중 문제 발생!!!!---->  디버깅 필요");
+        }
+    }
 }

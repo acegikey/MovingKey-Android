@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity
 
 
         /// 사용자가 설정한 Caps Lock 활성 여부
-
         RelativeLayout menu01_capsLock = (RelativeLayout)findViewById(R.id.menu01_capsLock);
         CheckBox checkBoxForCapsLock = (CheckBox)menu01_capsLock.findViewById(R.id.checkbox);
         checkBoxForCapsLock.setChecked(mvlib.func06_getCapsLockActiveState());
@@ -173,6 +172,25 @@ public class MainActivity extends AppCompatActivity
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCaps)
             {
                 mvlib.func06_setCapsLockActiveState(MainActivity.this,isCaps);
+            }
+        });
+
+
+
+
+        /// 사용자가 설정한 Auto Cap 활성 여부
+        RelativeLayout menu02_automatic_caps = (RelativeLayout)findViewById(R.id.menu02_automatic_caps);
+        CheckBox checkBoxForAutoCaps = (CheckBox)menu02_automatic_caps.findViewById(R.id.checkbox);
+
+        checkBoxForAutoCaps.setChecked(mvlib.func07_getAutoCapActiveState());
+
+        /// Auto Cap 활성 여부 저장
+        checkBoxForAutoCaps.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCaps)
+            {
+                mvlib.func07_setAutoCapActiveState(MainActivity.this,isCaps);
             }
         });
 

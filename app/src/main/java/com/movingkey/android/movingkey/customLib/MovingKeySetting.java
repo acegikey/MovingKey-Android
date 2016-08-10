@@ -33,6 +33,9 @@ public class MovingKeySetting
 
     /// CapsLock 활성화 여부
     public String setting07_capsLockActiveState;
+
+    /// Auto Cap 활성화 여부
+    public String setting08_autoCapActiveState;
 }
 
 
