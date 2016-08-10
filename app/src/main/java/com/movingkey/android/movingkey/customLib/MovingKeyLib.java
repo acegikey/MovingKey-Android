@@ -2,6 +2,7 @@ package com.movingkey.android.movingkey.customLib;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -86,7 +87,7 @@ public class MovingKeyLib
         String setting04_selectedSetGroup = pref.getString("setting04_selectedSetGroup",jsonString_setting04_selectedSetGroup);
         String setting05_isBalloonViewShow = pref.getString("setting05_isBalloonViewShow",defaultSettingGroup.setting05_isBalloonViewShow);
 
-        Type collectionType = new TypeToken<ArrayList<String>>(){}.getType();
+        Type collectionType = new TypeToken<ArrayList<LangAndLayout>>(){}.getType();
 
 
 
@@ -125,7 +126,29 @@ public class MovingKeyLib
     }
 
 
-    public int getCurrentKeyboardSizeIntValue(Context context)
+    public boolean func04_getKeyboardBalloonViewIsShow(Context context)
+    {
+        if(settingInMemory != null)
+        {
+            return ("YES".equals(settingInMemory.setting05_isBalloonViewShow));
+        }
+
+        Log.e("HWI","예외상황 발생 --> 풍선뷰 미리보기 설정 여부를 불러오지 못합니다!!!");
+
+        return true;
+    }
+
+    public void func04_saveKeyboardBalloonViewIsShow(Context context, boolean isShow)
+    {
+        settingInMemory.setting05_isBalloonViewShow = isShow ? "YES": "NO";
+
+        func03_saveCurrentMemorySettingToFile(context);
+
+    }
+
+
+
+    public int func05_getCurrentKeyboardSizeIntValue(Context context)
     {
         if(settingInMemory != null)
         {
@@ -151,5 +174,35 @@ public class MovingKeyLib
 
         return 0;
     }
+
+
+
+    public void func05_setCurrentKeyboardSizeIntValue(Context context, int value)
+    {
+        String valueString = "";
+        if(value == 0)
+        {
+            valueString = "Small";
+        }
+        else if(value == 1)
+        {
+            valueString = "Medium";
+        }
+        else if(value == 2)
+        {
+            valueString = "Large";
+        }
+        else if(value > 3 || value < 0)
+        {
+            valueString = "Small";
+            Log.e("HWi","키보드 크기 설정 중 예외상황 발생 !!!!---->  디버깅 필요");
+        }
+
+        settingInMemory.setting06_keyboardSize = valueString;
+
+        func03_saveCurrentMemorySettingToFile(context);
+
+    }
+
 
 }
