@@ -30,6 +30,9 @@ public class MovingKeySetting
     /// 키보드 사이즈 ( 대 / 중  / 소 )
     public String setting06_keyboardSize;
 
+
+    /// CapsLock 활성화 여부
+    public String setting07_capsLockActiveState;
 }
 
 

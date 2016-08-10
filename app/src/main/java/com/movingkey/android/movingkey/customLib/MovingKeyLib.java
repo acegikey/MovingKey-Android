@@ -65,6 +65,7 @@ public class MovingKeyLib
 
         defaultSettingGroup.setting05_isBalloonViewShow = "YES";
         defaultSettingGroup.setting06_keyboardSize = "Medium";
+        defaultSettingGroup.setting07_capsLockActiveState = "YES";
 
 
 
@@ -86,6 +87,8 @@ public class MovingKeyLib
         String setting03_lastSelectedDesign = pref.getString("setting03_lastSelectedDesign",defaultSettingGroup.setting03_lastSelectedDesign);
         String setting04_selectedSetGroup = pref.getString("setting04_selectedSetGroup",jsonString_setting04_selectedSetGroup);
         String setting05_isBalloonViewShow = pref.getString("setting05_isBalloonViewShow",defaultSettingGroup.setting05_isBalloonViewShow);
+        String setting06_keyboardSize = pref.getString("setting06_keyboardSize",defaultSettingGroup.setting06_keyboardSize);
+        String setting07_capsLockActiveState = pref.getString("setting07_capsLockActiveState",defaultSettingGroup.setting07_capsLockActiveState);
 
         Type collectionType = new TypeToken<ArrayList<LangAndLayout>>(){}.getType();
 
@@ -98,6 +101,9 @@ public class MovingKeyLib
         settingInMemory.setting03_lastSelectedDesign = setting03_lastSelectedDesign;
         settingInMemory.setting04_selectedSetGroup = gson.fromJson(setting04_selectedSetGroup,collectionType);
         settingInMemory.setting05_isBalloonViewShow = setting05_isBalloonViewShow;
+        settingInMemory.setting06_keyboardSize = setting06_keyboardSize;
+        settingInMemory.setting07_capsLockActiveState = setting07_capsLockActiveState;
+
     }
 
 
@@ -138,7 +144,7 @@ public class MovingKeyLib
         return true;
     }
 
-    public void func04_saveKeyboardBalloonViewIsShow(Context context, boolean isShow)
+    public void func04_setKeyboardBalloonViewIsShow(Context context, boolean isShow)
     {
         settingInMemory.setting05_isBalloonViewShow = isShow ? "YES": "NO";
 
@@ -198,10 +204,48 @@ public class MovingKeyLib
             Log.e("HWi","키보드 크기 설정 중 예외상황 발생 !!!!---->  디버깅 필요");
         }
 
-        settingInMemory.setting06_keyboardSize = valueString;
+        if(settingInMemory != null)
+        {
+            settingInMemory.setting06_keyboardSize = valueString;
 
-        func03_saveCurrentMemorySettingToFile(context);
+            func03_saveCurrentMemorySettingToFile(context);
+        }
+        else
+        {
+            Log.e("HWi","키보드 사이즈 변경 중 문제 발생!!!!---->  디버깅 필요");
+        }
 
+
+
+    }
+
+
+    public boolean func06_getCapsLockActiveState()
+    {
+        if(settingInMemory != null)
+        {
+            return "YES".equals(settingInMemory.setting07_capsLockActiveState);
+        }
+        else
+        {
+            Log.e("HWi","CapsLock 활성상태 불러 오기 중 문제 발생!!!!---->  디버깅 필요");
+            return true;
+        }
+    }
+
+    public void func06_setCapsLockActiveState(Context context, boolean isCaps)
+    {
+        if(settingInMemory != null)
+        {
+            settingInMemory.setting07_capsLockActiveState = isCaps ? "YES": "NO";
+
+            func03_saveCurrentMemorySettingToFile(context);
+
+        }
+        else
+        {
+            Log.e("HWi","CapsLock 활성상태 저장 중 문제 발생!!!!---->  디버깅 필요");
+        }
     }
 
 

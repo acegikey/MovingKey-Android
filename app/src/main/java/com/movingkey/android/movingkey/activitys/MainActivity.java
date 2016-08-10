@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked)
             {
-                mvlib.func04_saveKeyboardBalloonViewIsShow(MainActivity.this,isChecked);
+                mvlib.func04_setKeyboardBalloonViewIsShow(MainActivity.this,isChecked);
             }
         });
 
@@ -156,6 +156,27 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+
+
+
+        /// 사용자가 설정한 Caps Lock 활성 여부
+
+        RelativeLayout menu01_capsLock = (RelativeLayout)findViewById(R.id.menu01_capsLock);
+        CheckBox checkBoxForCapsLock = (CheckBox)menu01_capsLock.findViewById(R.id.checkbox);
+        checkBoxForCapsLock.setChecked(mvlib.func06_getCapsLockActiveState());
+
+        /// Caps Lock 활성 여부 저장
+        checkBoxForCapsLock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCaps)
+            {
+                mvlib.func06_setCapsLockActiveState(MainActivity.this,isCaps);
+            }
+        });
+
+
 
 
     }
