@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.movingkey.android.movingkey.R;
+import com.movingkey.android.movingkey.customLib.MovingKeyLib;
+import com.movingkey.android.movingkey.customLib.MovingKeySetting;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -19,6 +22,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         initMenuTiltesAndSettings();
+
+        loadSettingAndApplyToView();
+
     }
 
 
@@ -55,9 +61,9 @@ public class MainActivity extends AppCompatActivity
         RelativeLayout menu03_keyboardSize = (RelativeLayout)findViewById(R.id.menu03_keyboardSize);
 
 
-        TextView title01_theme =  (TextView)menu01_lang.findViewById(R.id.title);
-        TextView title02_Prev =  (TextView)menu02_auto.findViewById(R.id.title);
-        TextView title03_keyboardSize =  (TextView)menu03_memo.findViewById(R.id.title);
+        TextView title01_theme =  (TextView)menu01_theme.findViewById(R.id.title);
+        TextView title02_Prev =  (TextView)menu02_Prev.findViewById(R.id.title);
+        TextView title03_keyboardSize =  (TextView)menu03_keyboardSize.findViewById(R.id.title);
 
 
 
@@ -97,5 +103,43 @@ public class MainActivity extends AppCompatActivity
         title03_aboutLicense.setText("About license");
 
         title03_aboutLicenseCheckBox.setVisibility(View.GONE);
+    }
+
+
+
+    void loadSettingAndApplyToView()
+    {
+        /// 메인 화면 진입 시 --> 최초로 설정파일에서 메모리로 올림
+
+
+
+        MovingKeyLib mvlib = MovingKeyLib.getSharedObj();
+
+        if ( mvlib.func01_getSharedSetting() == null )
+        {
+            mvlib.func02_loadMovingKeySettingFromFileAndLoadMemory(MainActivity.this);
+        }
+
+        MovingKeySetting curSetting = mvlib.func01_getSharedSetting();
+
+
+        /// 사용자가 설정한 풍선뷰 미리보기 여부 -- > 적용
+        RelativeLayout menu02_Prev = (RelativeLayout)findViewById(R.id.menu02_Prev);
+        CheckBox checkbox = (CheckBox)menu02_Prev.findViewById(R.id.checkbox);
+
+        checkbox.setChecked("YES".equals(curSetting.setting05_isBalloonViewShow));
+
+
+        /// 사용자가 설정한 키보드 크기  ---> 적용
+        RelativeLayout menu03_keyboardSize = (RelativeLayout)findViewById(R.id.menu03_keyboardSize);
+        SeekBar keyboardSizeSeekBar = (SeekBar)menu03_keyboardSize.findViewById(R.id.keyboardSizeSeekBar);
+        int curKeyboardSizeInt = mvlib.getCurrentKeyboardSizeIntValue(MainActivity.this);
+
+        keyboardSizeSeekBar.setProgress(curKeyboardSizeInt);
+
+
+
+
+
     }
 }

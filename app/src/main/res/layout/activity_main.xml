@@ -115,7 +115,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Settings"
+                        android:text="UI"
                         android:textColor="#4188c7"
                         android:layout_marginLeft="16dp"
                         android:textSize="14sp"
@@ -222,5 +222,14 @@
 
     </ScrollView>
 
+    
+    
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="92dp"
+        android:background="@drawable/small_keyboard_floating_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
 
 </RelativeLayout>
