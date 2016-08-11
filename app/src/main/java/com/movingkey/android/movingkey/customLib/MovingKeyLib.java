@@ -2,7 +2,10 @@ package com.movingkey.android.movingkey.customLib;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.provider.Settings;
 import android.util.Log;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -306,4 +309,59 @@ public class MovingKeyLib
             Log.e("HWi","Auto Cap 활성상태 저장 중 문제 발생!!!!---->  디버깅 필요");
         }
     }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 현재 선택된 키보드 그룹에 무빙키가 포함되어있는지 여부 조사
+     */
+    public static boolean func08_isMovingkeyContainsInSystem(Context context)
+    {
+        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        String movingkeyPackageName = context.getPackageName();
+        for (InputMethodInfo imi : imm.getEnabledInputMethodList())
+        {
+            if (imi.getServiceName().contains(movingkeyPackageName))
+            {
+                return true;
+            }
+
+        }
+        return false;
+
+    }
+
+    /**
+     * 무빙키가 단일 선택된 키보드인지 여부 조사
+     */
+    public static boolean func09_isMovingkeySelected(Context context)
+    {
+
+        String movingkeyPackageName = context.getPackageName();
+        String currentKeyboardString = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.DEFAULT_INPUT_METHOD);
+
+        Log.d("HWI", "현재 내 앱의 패키지 이름 : " + movingkeyPackageName);
+        Log.d("HWI", "현재 시스템에서 설정된 키보드 이름: " + currentKeyboardString);
+
+        boolean isContainMyKeyboard = currentKeyboardString.contains(movingkeyPackageName);
+        Log.d("HWI", "내 키보드가 무빙키인 여부 : " + isContainMyKeyboard);
+        return isContainMyKeyboard;
+    }
+
+    /**
+     * 사용자가 사용하는 키보드 선택하도록 피커 띄움
+     */
+    public static void func10_showSelectKeyboardView(Context context)
+    {
+        final InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showInputMethodPicker();
+    }
+
 }
