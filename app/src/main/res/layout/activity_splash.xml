@@ -9,32 +9,90 @@
     <ImageView
         android:id="@+id/logoImage"
         android:layout_width="157dp"
-        android:layout_height="201dp"
+        android:layout_height="200dp"
         android:src="@drawable/movingkey_logo"
-        android:layout_centerInParent="true"
-        />
-
-
-    <ImageButton
-        android:id="@+id/nextBtn"
-        android:layout_width="48dp"
-        android:layout_height="49.2dp"
-        android:layout_below="@id/logoImage"
-        android:layout_marginTop="51dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/group"
+        android:layout_above="@+id/centerFakeV"
+        android:layout_marginBottom="-20dp"
         />
 
-    <TextView
-        android:layout_below="@+id/nextBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="setting"
-        android:textColor="#4d4d4d"
-        android:layout_marginTop="20dp"
-        android:textSize="14sp"
+
+<RelativeLayout
+    android:id="@+id/centerFakeV"
+    android:layout_width="match_parent"
+    android:layout_centerInParent="true"
+    android:layout_height="1dp" />
+
+
+
+<RelativeLayout
+    android:id="@+id/rela_btn01"
+    android:layout_below="@+id/centerFakeV"
+    android:layout_width="173dp"
+    android:layout_height="38dp"
+    android:background="@drawable/button_2"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="100dp"
+    >
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="1. Enable MovingKey"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="16dp"
+    android:textSize="13.5sp"
+    android:textColor="#ffffff"
+    />
+    <ImageView
+        android:id="@+id/check01EnableMovingkey"
+        android:layout_width="10dp"
+        android:layout_height="9dp"
+        android:background="@drawable/check"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        />
+    <Button
+        android:id="@+id/btn01_enableMovingKey"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        />
+</RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rela_btn02"
+        android:layout_below="@+id/rela_btn01"
+        android:layout_width="173dp"
+        android:layout_height="38dp"
+        android:background="@drawable/button_2"
         android:layout_centerHorizontal="true"
-        />
-
+        android:layout_marginTop="8dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2. Pick MovingKey"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:textSize="13.5sp"
+            android:textColor="#ffffff"
+            />
+        <ImageView
+            android:id="@+id/check02PickMovingkey"
+            android:layout_width="10dp"
+            android:layout_height="9dp"
+            android:background="@drawable/check"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            />
+        <Button
+            android:id="@+id/btn02_pickMovingKey"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            />
+    </RelativeLayout>
     
 </RelativeLayout>

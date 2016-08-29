@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.movingkey.android.movingkey.activitys.MainActivity;
 import com.movingkey.android.movingkey.customLib.HWILib;
@@ -14,6 +15,8 @@ import com.movingkey.android.movingkey.customLib.MovingKeyLib;
 public class SplashActivity extends AppCompatActivity
 {
 
+    ImageView check01EnableMovingkey;
+    ImageView check02PickMovingkey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,17 +25,25 @@ public class SplashActivity extends AppCompatActivity
         setContentView(R.layout.activity_splash);
 
 
-        ImageButton nextBtn = (ImageButton)findViewById(R.id.nextBtn);
-        nextBtn.setOnClickListener(new View.OnClickListener()
+        View.OnClickListener clickListenerForSetting = new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 checkKeyboard();
             }
-        });
+        };
+
+        Button btn01_enableMovingKey = (Button)findViewById(R.id.btn01_enableMovingKey);
+        btn01_enableMovingKey.setOnClickListener(clickListenerForSetting);
+
+        Button btn02_pickMovingKey = (Button)findViewById(R.id.btn02_pickMovingKey);
+        btn02_pickMovingKey.setOnClickListener(clickListenerForSetting);
 
 
+
+        check01EnableMovingkey = (ImageView)findViewById(R.id.check01EnableMovingkey);
+        check02PickMovingkey = (ImageView)findViewById(R.id.check02PickMovingkey);
 
     }
 
@@ -74,12 +85,18 @@ public class SplashActivity extends AppCompatActivity
 
         boolean isMovingkeyContainsInSystem = mvLib.func08_isMovingkeyContainsInSystem(SplashActivity.this);
         boolean isMovingKeySelectedKeyboard = mvLib.func09_isMovingkeySelected(SplashActivity.this);
+
+        check01EnableMovingkey.setVisibility(View.GONE);
+        check02PickMovingkey.setVisibility(View.GONE);
+
         /// 무빙키가 시스템에 포함되어 있는 경우
         if(isMovingkeyContainsInSystem)
         {
+            check01EnableMovingkey.setVisibility(View.VISIBLE);
             /// 키보드가 완전히 선택된 경우 ---> 메인화면으로 이동한다
             if(isMovingKeySelectedKeyboard)
             {
+                check02PickMovingkey.setVisibility(View.VISIBLE);
                 hwiLib.func01_runOnDelay(new Runnable()
                 {
                     @Override
