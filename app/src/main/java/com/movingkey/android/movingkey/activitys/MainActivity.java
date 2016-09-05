@@ -1,5 +1,6 @@
 package com.movingkey.android.movingkey.activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -89,6 +90,19 @@ public class MainActivity extends AppCompatActivity
         title03_aboutLicense.setText("About license");
 
         title03_aboutLicenseCheckBox.setVisibility(View.GONE);
+
+
+
+
+        /// 언어 및 레이아웃 셋팅 메뉴로 이동
+        menu01_lang.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                moveOtherActivity(LanguageAndLayoutActivity.class);
+            }
+        });
     }
 
 
@@ -197,5 +211,12 @@ public class MainActivity extends AppCompatActivity
 
 
 
+    }
+
+
+    void moveOtherActivity(Class<?> targetClass)
+    {
+        Intent intent = new Intent(MainActivity.this,targetClass);
+        startActivity(intent);
     }
 }
