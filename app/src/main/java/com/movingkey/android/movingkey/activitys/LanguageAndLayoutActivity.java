@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.adapters.LanguageAndLayoutListAdapter;
 import com.movingkey.android.movingkey.customLib.HWILib;
+import com.woxthebox.draglistview.DragListView;
 
 public class LanguageAndLayoutActivity extends AppCompatActivity
 {
@@ -28,7 +30,10 @@ public class LanguageAndLayoutActivity extends AppCompatActivity
         Log.d("HWI","loadLanguageSettings 호출 테스트");
         LanguageAndLayoutListAdapter selectedLangAdapter = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,true);
 
-        final ListView selectedListView = (ListView)findViewById(R.id.listview_selected);
+        final DragListView selectedListView = (DragListView)findViewById(R.id.listview_selected);
+        selectedListView.getRecyclerView().setVerticalScrollBarEnabled(false);
+
+
         selectedListView.setAdapter(selectedLangAdapter);
 
 

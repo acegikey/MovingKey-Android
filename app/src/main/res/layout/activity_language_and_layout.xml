@@ -64,7 +64,7 @@
                     />
 
             </RelativeLayout>
-            <ListView
+            <com.woxthebox.draglistview.DragListView
                 android:id="@+id/listview_selected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:paddingTop="18dp"
                 >
 
-            </ListView>
+            </com.woxthebox.draglistview.DragListView>
             <RelativeLayout
                 android:id="@+id/availableLangGroup"
                 android:layout_width="match_parent"
