@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="58dp">
-
-    <TextView
-        android:id="@+id/textview_cur_lang_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:text="Arabic"
-        android:layout_centerVertical="true"
-        android:textColor="#000000"
-        />
-
-
-    <TextView
-        android:id="@+id/textview_select_keyboard_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select to enable"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-
-        android:textColor="#4188c7"
-        android:textSize="11sp"
-        />
-
+                android:layout_width="match_parent"
+                android:layout_height="58dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/line"
-        />
+        android:layout_height="58dp"
+        >
+        <TextView
+            android:id="@+id/textview_cur_lang_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:text="Arabic"
+            android:layout_centerVertical="true"
+            android:textColor="#000000"
+            />
 
+
+        <TextView
+            android:id="@+id/textview_select_keyboard_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select to enable"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textColor="#4188c7"
+            android:textSize="11sp"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/line"
+            />
+    </RelativeLayout>
 </RelativeLayout>

@@ -83,7 +83,6 @@ public class MovingKeySetting
         setting09_allLanguagesModels = new ArrayList<>();
 
         setting09_allLanguagesModels.add(new Arabic());
-        setting09_allLanguagesModels.add(new Arabic());
         setting09_allLanguagesModels.add(new Bulgarian());
         setting09_allLanguagesModels.add(new Catalan());
         setting09_allLanguagesModels.add(new Croatian());

@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.movingkey.android.movingkey.languages.bean.Language;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -47,10 +48,6 @@ public class MovingKeyLib
     public void func02_loadMovingKeySettingFromFileAndLoadMemory(Context context)
     {
 
-
-
-
-
         /// 사용자의 설정이 전혀 없을 경우 디폴트값으로 지정할 디폴트 객제 생성
         MovingKeySetting defaultSettingGroup = new MovingKeySetting();
         defaultSettingGroup.setting01_lastSelectedLang = "en";
@@ -61,9 +58,8 @@ public class MovingKeyLib
 
 
 
-        LangAndLayout defalutLangAndLayout = new LangAndLayout();
-        defalutLangAndLayout.language = "en";
-        defalutLangAndLayout.layout = Const.LAYOUT_QWERTY;
+        LangAndLayout defalutLangAndLayout = new LangAndLayout("en",Const.LAYOUT_QWERTY);
+
 
         defaultSettingGroup.setting04_selectedSetGroup.add(defalutLangAndLayout);
 
@@ -364,6 +360,76 @@ public class MovingKeyLib
         imm.showInputMethodPicker();
     }
 
+
+
+
+
+    public ArrayList<LangAndLayout> func11_getUnSelectedLangAndLayouts(Context context)
+    {
+
+        if(settingInMemory != null && settingInMemory.setting04_selectedSetGroup != null)
+        {
+            ArrayList<LangAndLayout> selectedGroup = settingInMemory.setting04_selectedSetGroup;
+            ArrayList<LangAndLayout> unSelectedGroup = new ArrayList<LangAndLayout>();
+            ArrayList<Language> allLangGroup = settingInMemory.getSetting09_allLanguagesModels();
+
+            for(int i=0; i < allLangGroup.size(); i++)
+            {
+                Language oneLangModel = allLangGroup.get(i);
+                unSelectedGroup.add(new LangAndLayout(oneLangModel.hwi00_languageCode,""));
+            }
+
+
+
+            for(int i=0; i < selectedGroup.size(); i++)
+            {
+
+                LangAndLayout oneLangAndLayoutModel = selectedGroup.get(i);
+
+                for(int j=0; j < unSelectedGroup.size(); j++)
+                {
+                    if( j < unSelectedGroup.size())
+                    {
+                        LangAndLayout unselectedOneLangAndLayout = unSelectedGroup.get(j);
+
+
+                        if(unselectedOneLangAndLayout.language.equals(oneLangAndLayoutModel.language))
+                        {
+                            unSelectedGroup.remove(unselectedOneLangAndLayout);
+                        }
+                    }
+
+                }
+
+            }
+
+            return unSelectedGroup;
+        }
+
+        Log.d("HWI","메모리에 로드된 키보드 관련 정보가 없습니다.");
+
+        return null;
+    }
+
+
+
+    public String func12_getLanguageFullNameFromCode(String langCode)
+    {
+        ArrayList<Language> langModelArr = settingInMemory.getSetting09_allLanguagesModels();
+
+
+        for(int i=0; i < langModelArr.size(); i++)
+        {
+            Language oneLang = langModelArr.get(i);
+
+            if(oneLang.hwi00_languageCode.equals(langCode))
+            {
+                return oneLang.hwi00_languageName;
+            }
+        }
+
+        return "No LangName";
+    }
 
 
 

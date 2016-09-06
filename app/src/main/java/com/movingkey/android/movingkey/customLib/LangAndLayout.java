@@ -7,4 +7,10 @@ public class LangAndLayout
 {
     public String language;
     public String layout;
+
+    public LangAndLayout(String language, String layout)
+    {
+        this.language = language;
+        this.layout = layout;
+    }
 }

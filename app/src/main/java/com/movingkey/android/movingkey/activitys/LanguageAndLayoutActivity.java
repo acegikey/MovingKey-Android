@@ -2,10 +2,12 @@ package com.movingkey.android.movingkey.activitys;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.adapters.LanguageAndLayoutListAdapter;
+import com.movingkey.android.movingkey.customLib.HWILib;
 
 public class LanguageAndLayoutActivity extends AppCompatActivity
 {
@@ -22,10 +24,25 @@ public class LanguageAndLayoutActivity extends AppCompatActivity
 
     void loadLanguageSettings()
     {
+        /// 선택된 언어+레이아웃 데이터 불러와서 리스트뷰에 셋팅
+        Log.d("HWI","loadLanguageSettings 호출 테스트");
         LanguageAndLayoutListAdapter selectedLangAdapter = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,true);
 
-        ListView selectedListView = (ListView)findViewById(R.id.listview_selected);
+        final ListView selectedListView = (ListView)findViewById(R.id.listview_selected);
         selectedListView.setAdapter(selectedLangAdapter);
+
+
+
+
+
+        LanguageAndLayoutListAdapter unSelectedLangAdapater = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,false);
+        final ListView listview_available = (ListView)findViewById(R.id.listview_available);
+        listview_available.setAdapter(unSelectedLangAdapater);
+
+        HWILib.getSharedObj().func02_setListViewHeightBasedOnChildren(selectedListView);
+        HWILib.getSharedObj().func02_setListViewHeightBasedOnChildren(listview_available);
+
+
 
     }
 

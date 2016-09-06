@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.customLib.LangAndLayout;
@@ -21,6 +22,13 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
     private ArrayList<LangAndLayout> itemList;
     private Context context;
     private boolean isSelected;
+
+    /**
+     * 언어+레이아웃 조합 형태의 정보객체들로 이루어진 어댑터 생성
+     *
+     * @param context 컨텍스트
+     * @param  isSelected 사용자가 선택한 언어+레이아웃 그룹 or 선택되지 않은 그룹인지 여부
+     * */
     public LanguageAndLayoutListAdapter(Context context, boolean isSelected)
     {
         this.context = context;
@@ -36,27 +44,17 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
         }
 
         MovingKeySetting curSetting = mvlib.func01_getSharedSetting();
-        this.itemList = curSetting.setting04_selectedSetGroup;
 
-
-        /// 데이터 로그를 보기 위한 부분
-        /*
-        if( curSetting.setting04_selectedSetGroup.size() > 0 )
+        if(isSelected)
         {
-
-            for(int i=0; i < curSetting.setting04_selectedSetGroup.size() ; i++)
-            {
-                LangAndLayout oneLangAndLayout = curSetting.setting04_selectedSetGroup.get(i);
-                Log.d("HWI","언어 : "+oneLangAndLayout.language+" 레이아웃 : "+oneLangAndLayout.layout);
-
-            }
-
+            this.itemList = curSetting.setting04_selectedSetGroup;
         }
         else
         {
-            Log.e("HWI","문제 발생 --> 선택한 언어+레이아웃 조합이 한개도 없는 경우는 있을 수 없습니다");
+
+            this.itemList = mvlib.func11_getUnSelectedLangAndLayouts(context);
         }
-        */
+
 
     }
 
@@ -102,13 +100,22 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
         if(isSelected)
         {
             convertView = inflater.inflate(R.layout.list_lang_select01,null);
+
         }
         /// 선택되지 않은 레이아웃일 경우
         else
         {
             convertView = inflater.inflate(R.layout.list_lang_select02,null);
         }
+        LangAndLayout oneItem = itemList.get(position);
+        TextView textview_cur_lang_name = (TextView)convertView.findViewById(R.id.textview_cur_lang_name);
+        textview_cur_lang_name.setText(MovingKeyLib.getSharedObj().func12_getLanguageFullNameFromCode(oneItem.language));
 
+        TextView textview_cur_layout_name = (TextView)convertView.findViewById(R.id.textview_cur_layout_name);
+        if(textview_cur_layout_name != null || !"".equals(oneItem.layout))
+        {
+            textview_cur_layout_name.setText(oneItem.layout);
+        }
 
 
         return convertView;

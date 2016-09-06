@@ -6,8 +6,9 @@ package com.movingkey.android.movingkey.customLib;
 public class Const
 {
 
-    public static final String LAYOUT_QWERTY = "LAYOUT_QWERTY";
-    public static final String LAYOUT_HalfQWERTY = "LAYOUT_HalfQWERTY";
+    public static final String LAYOUT_QWERTY = "QWERTY";
+    public static final String LAYOUT_HalfQWERTY = "Half-QWERTY";
+    public static final String LAYOUT_QUETO = "QUETO";
 
     public static final String SKIN_DEFALT = "SKIN_DEFAULT";
 
