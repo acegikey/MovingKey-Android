@@ -3,6 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="58dp">
     <RelativeLayout
+        android:id="@+id/rela_container"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         >

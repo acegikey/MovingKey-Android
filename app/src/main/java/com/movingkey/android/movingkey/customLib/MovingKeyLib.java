@@ -1,15 +1,22 @@
 package com.movingkey.android.movingkey.customLib;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.movingkey.android.movingkey.R;
+import com.movingkey.android.movingkey.adapters.SelectLayoutPopupListAdapter;
 import com.movingkey.android.movingkey.languages.bean.Language;
 
 import java.lang.reflect.Type;
@@ -129,7 +136,7 @@ public class MovingKeyLib
     {
         if(settingInMemory != null && settingInMemory.setting01_lastSelectedLang != null)
         {
-
+            Log.d("HWI","test --> context : "+context);
             SharedPreferences.Editor editor = context.getSharedPreferences("MovingKey",Context.MODE_PRIVATE).edit();
             editor.putString("setting01_lastSelectedLang",settingInMemory.setting01_lastSelectedLang);
             editor.putString("setting02_lastSelectedLayout",settingInMemory.setting02_lastSelectedLayout);
@@ -447,12 +454,14 @@ public class MovingKeyLib
 
     public void func14_changeLayoutWithLang(Context context,LangAndLayout langAndLAyout, String Layout)
     {
+        Log.d("HWI","test 0001");
         LangAndLayout selectedObj = null;
         if(settingInMemory != null && settingInMemory.setting04_selectedSetGroup != null)
         {
-
+            Log.d("HWI","test 0002");
             for( int i = 0; i <settingInMemory.setting04_selectedSetGroup.size(); i++)
             {
+                Log.d("HWI","test 0003");
                 LangAndLayout oneLangAndLayout = settingInMemory.setting04_selectedSetGroup.get(i);
 
                 if( oneLangAndLayout.language.equals(langAndLAyout.language))
@@ -466,21 +475,52 @@ public class MovingKeyLib
             ///
             if(selectedObj != null)
             {
+                Log.d("HWI","test 0004");
                 selectedObj.layout = Layout;
             }
             else
             {
+                Log.d("HWI","test 0005");
                 selectedObj = new LangAndLayout(langAndLAyout.language,Layout);
                 settingInMemory.setting04_selectedSetGroup.add(selectedObj);
             }
         }
         else
         {
+            Log.d("HWI","test 0006");
             selectedObj = new LangAndLayout(langAndLAyout.language,Layout);
             settingInMemory.setting04_selectedSetGroup.add(selectedObj);
         }
-
+        Log.d("HWI","test 0007");
         func03_saveCurrentMemorySettingToFile(context);
+    }
+
+
+
+    public void func15_showSelectLayoutPopup(Context context, LangAndLayout langAndLayoutModel)
+    {
+        AlertDialog.Builder alertDiaBuilder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        RelativeLayout dialogView = (RelativeLayout)inflater.inflate(R.layout.popup_keyboard_layout_select,null);
+
+
+
+        ListView layoutSelectList = (ListView)dialogView.findViewById(R.id.list_select_layout);
+
+        AlertDialog dialog = alertDiaBuilder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        layoutSelectList.setAdapter(new SelectLayoutPopupListAdapter(context,langAndLayoutModel, dialog));
+
+
+        alertDiaBuilder.setView(dialogView);
+        alertDiaBuilder.setCancelable(true);
+
+
+        dialog.show();
     }
 
 }

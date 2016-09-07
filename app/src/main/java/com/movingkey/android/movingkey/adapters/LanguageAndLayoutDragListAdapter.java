@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.movingkey.android.movingkey.R;
@@ -32,9 +33,10 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
     private final List<LangAndLayout> mItems;
 
     private final OnStartDragListener mDragStartListener;
-
+    Context context;
     public LanguageAndLayoutDragListAdapter(Context context, OnStartDragListener dragStartListener)
     {
+        context = context;
         mDragStartListener = dragStartListener;
         mItems = MovingKeyLib.getSharedObj().func01_getSharedSetting().setting04_selectedSetGroup;
     }
@@ -47,7 +49,7 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
 
         holder.textview_cur_lang_name.setText(MovingKeyLib.getSharedObj().func12_getLanguageFullNameFromCode(mItems.get(position).language));
         holder.textview_cur_layout_name.setText(mItems.get(position).layout);
@@ -61,6 +63,17 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
                     mDragStartListener.onStartDrag(holder);
                 }
                 return false;
+            }
+        });
+
+
+        holder.rela_container.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                MovingKeyLib.getSharedObj().func15_showSelectLayoutPopup(view.getContext(), mItems.get(position));
+
             }
         });
     }
@@ -90,6 +103,8 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
 
         public final TextView textview_cur_lang_name;
         public final TextView textview_cur_layout_name;
+        public final RelativeLayout rela_container;
+
 
         public final ImageView handleView;
 
@@ -97,6 +112,8 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
             super(itemView);
             textview_cur_lang_name = (TextView) itemView.findViewById(R.id.textview_cur_lang_name);
             textview_cur_layout_name = (TextView) itemView.findViewById(R.id.textview_cur_layout_name);
+            rela_container = (RelativeLayout) itemView.findViewById(R.id.rela_container);
+
 
             handleView = (ImageView) itemView.findViewById(R.id.grabImage);
         }
