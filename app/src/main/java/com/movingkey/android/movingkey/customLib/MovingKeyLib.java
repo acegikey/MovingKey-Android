@@ -432,5 +432,55 @@ public class MovingKeyLib
     }
 
 
+    public ArrayList<String> func13_getSupportLayoutArr(String langCode)
+    {
+        ArrayList<String> supportLayoutArr = new ArrayList<String>();
+
+        supportLayoutArr.add(Const.LAYOUT_QWERTY);
+        supportLayoutArr.add(Const.LAYOUT_HalfQWERTY);
+        supportLayoutArr.add(Const.LAYOUT_QUETO);
+
+        return supportLayoutArr;
+    }
+
+
+
+    public void func14_changeLayoutWithLang(Context context,LangAndLayout langAndLAyout, String Layout)
+    {
+        LangAndLayout selectedObj = null;
+        if(settingInMemory != null && settingInMemory.setting04_selectedSetGroup != null)
+        {
+
+            for( int i = 0; i <settingInMemory.setting04_selectedSetGroup.size(); i++)
+            {
+                LangAndLayout oneLangAndLayout = settingInMemory.setting04_selectedSetGroup.get(i);
+
+                if( oneLangAndLayout.language.equals(langAndLAyout.language))
+                {
+                    selectedObj =  oneLangAndLayout;
+                    break;
+                }
+
+            }
+
+            ///
+            if(selectedObj != null)
+            {
+                selectedObj.layout = Layout;
+            }
+            else
+            {
+                selectedObj = new LangAndLayout(langAndLAyout.language,langAndLAyout.layout);
+                settingInMemory.setting04_selectedSetGroup.add(selectedObj);
+            }
+        }
+        else
+        {
+            selectedObj = new LangAndLayout(langAndLAyout.language,langAndLAyout.layout);
+            settingInMemory.setting04_selectedSetGroup.add(selectedObj);
+        }
+
+        func03_saveCurrentMemorySettingToFile(context);
+    }
 
 }

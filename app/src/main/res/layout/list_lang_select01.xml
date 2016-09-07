@@ -41,6 +41,7 @@
 
 
         <ImageView
+            android:id="@+id/grabImage"
             android:layout_width="24dp"
             android:layout_height="18dp"
             android:background="@drawable/order"
