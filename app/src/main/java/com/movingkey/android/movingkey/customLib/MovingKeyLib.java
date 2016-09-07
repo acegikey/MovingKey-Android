@@ -470,13 +470,13 @@ public class MovingKeyLib
             }
             else
             {
-                selectedObj = new LangAndLayout(langAndLAyout.language,langAndLAyout.layout);
+                selectedObj = new LangAndLayout(langAndLAyout.language,Layout);
                 settingInMemory.setting04_selectedSetGroup.add(selectedObj);
             }
         }
         else
         {
-            selectedObj = new LangAndLayout(langAndLAyout.language,langAndLAyout.layout);
+            selectedObj = new LangAndLayout(langAndLAyout.language,Layout);
             settingInMemory.setting04_selectedSetGroup.add(selectedObj);
         }
 

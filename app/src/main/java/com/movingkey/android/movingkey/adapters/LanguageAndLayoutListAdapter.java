@@ -1,10 +1,15 @@
 package com.movingkey.android.movingkey.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.movingkey.android.movingkey.R;
@@ -96,28 +101,147 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
     {
 
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        /// 선택된 레이아웃일 경우
-        if(isSelected)
-        {
-            convertView = inflater.inflate(R.layout.list_lang_select01,null);
 
-        }
-        /// 선택되지 않은 레이아웃일 경우
-        else
+        if(convertView == null)
         {
             convertView = inflater.inflate(R.layout.list_lang_select02,null);
         }
-        LangAndLayout oneItem = itemList.get(position);
+
+
+        final LangAndLayout oneItem = itemList.get(position);
         TextView textview_cur_lang_name = (TextView)convertView.findViewById(R.id.textview_cur_lang_name);
         textview_cur_lang_name.setText(MovingKeyLib.getSharedObj().func12_getLanguageFullNameFromCode(oneItem.language));
 
         TextView textview_cur_layout_name = (TextView)convertView.findViewById(R.id.textview_cur_layout_name);
-        if(textview_cur_layout_name != null || !"".equals(oneItem.layout))
+
+
+
+        if(textview_cur_layout_name != null)
         {
             textview_cur_layout_name.setText(oneItem.layout);
         }
 
+        TextView textview_select_keyboard_layout = (TextView)convertView.findViewById(R.id.textview_select_keyboard_layout);
+
+        convertView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                showSelectLayoutPopup(oneItem);
+            }
+        });
+
 
         return convertView;
     }
+
+    void showSelectLayoutPopup(LangAndLayout langAndLayoutModel)
+    {
+        AlertDialog.Builder alertDiaBuilder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        RelativeLayout dialogView = (RelativeLayout)inflater.inflate(R.layout.popup_keyboard_layout_select,null);
+
+
+
+        ListView layoutSelectList = (ListView)dialogView.findViewById(R.id.list_select_layout);
+
+        layoutSelectList.setAdapter(new SelectLayoutPopupListAdapter(context,langAndLayoutModel));
+
+
+        alertDiaBuilder.setView(dialogView);
+        alertDiaBuilder.setCancelable(true);
+
+        AlertDialog dialog = alertDiaBuilder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+    }
+
+
+    class SelectLayoutPopupListAdapter extends BaseAdapter
+    {
+        Context context;
+        LangAndLayout onelangAndLAyout;
+        ArrayList<String> availableLayoutArr;
+
+        public SelectLayoutPopupListAdapter(Context context, LangAndLayout onelangAndLAyout)
+        {
+            this.context = context;
+            this.onelangAndLAyout = onelangAndLAyout;
+            this.availableLayoutArr = MovingKeyLib.getSharedObj().func13_getSupportLayoutArr(onelangAndLAyout.language);
+        }
+
+
+        @Override
+        public int getCount()
+        {
+            if(availableLayoutArr != null)
+            {
+                return availableLayoutArr.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i)
+        {
+            if(availableLayoutArr != null)
+            {
+                return this.availableLayoutArr.get(i);
+            }
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position)
+        {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup viewGroup)
+        {
+
+            if(convertView == null)
+            {
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+                RelativeLayout itemView = (RelativeLayout)inflater.inflate(R.layout.popup_keyboard_list_item,null);
+                convertView = itemView;
+            }
+
+            final String oneLayoutName = this.availableLayoutArr.get(position);
+
+            TextView textview_layout_name =  (TextView)convertView.findViewById(R.id.textview_layout_name);
+            RelativeLayout bottomline =  (RelativeLayout)convertView.findViewById(R.id.bottomline);
+
+            textview_layout_name.setText(oneLayoutName);
+
+            if(position == this.availableLayoutArr.size() - 1)
+            {
+                bottomline.setVisibility(View.GONE);
+            }
+            else
+            {
+                bottomline.setVisibility(View.VISIBLE);
+            }
+
+
+            convertView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+
+                    MovingKeyLib.getSharedObj().func14_changeLayoutWithLang(context,onelangAndLAyout,oneLayoutName);
+                }
+            });
+
+
+            return convertView;
+        }
+    }
+
 }
