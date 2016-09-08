@@ -12,12 +12,18 @@ import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.adapters.LanguageAndLayoutDragListAdapter;
 import com.movingkey.android.movingkey.adapters.LanguageAndLayoutListAdapter;
 import com.movingkey.android.movingkey.customLib.HWILib;
+import com.movingkey.android.movingkey.interfaces.AdapterEvent;
 import com.movingkey.android.movingkey.openLib.draglist.OnStartDragListener;
 import com.movingkey.android.movingkey.openLib.draglist.SimpleItemTouchHelperCallback;
 
-public class LanguageAndLayoutActivity extends AppCompatActivity implements OnStartDragListener
+public class LanguageAndLayoutActivity extends AppCompatActivity implements OnStartDragListener, AdapterEvent
 {
     private ItemTouchHelper mItemTouchHelper;
+
+    LanguageAndLayoutDragListAdapter adapterForSelectedLang;
+    LanguageAndLayoutListAdapter unSelectedLangAdapater;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,12 +48,12 @@ public class LanguageAndLayoutActivity extends AppCompatActivity implements OnSt
 
         /// 드래그 할 수 있는 뷰
         final RecyclerView listview_selected = (RecyclerView)findViewById(R.id.listview_selected);
-        LanguageAndLayoutDragListAdapter adapter = new LanguageAndLayoutDragListAdapter(LanguageAndLayoutActivity.this, LanguageAndLayoutActivity.this);
+        adapterForSelectedLang = new LanguageAndLayoutDragListAdapter(LanguageAndLayoutActivity.this, LanguageAndLayoutActivity.this);
         listview_selected.setHasFixedSize(true);
-        listview_selected.setAdapter(adapter);
+        listview_selected.setAdapter(adapterForSelectedLang);
         listview_selected.setLayoutManager(new LinearLayoutManager(LanguageAndLayoutActivity.this));
 
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapterForSelectedLang);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(listview_selected);
 
@@ -56,8 +62,8 @@ public class LanguageAndLayoutActivity extends AppCompatActivity implements OnSt
 
 
         /// 하단에 선택되지 않은 리스트뷰
-        LanguageAndLayoutListAdapter unSelectedLangAdapater = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,false);
-        final ListView listview_available = (ListView)findViewById(R.id.listview_available);
+        unSelectedLangAdapater = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,false);
+        ListView listview_available = (ListView)findViewById(R.id.listview_available);
         listview_available.setAdapter(unSelectedLangAdapater);
 
 
@@ -72,5 +78,15 @@ public class LanguageAndLayoutActivity extends AppCompatActivity implements OnSt
     public void onStartDrag(RecyclerView.ViewHolder viewHolder)
     {
         mItemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void OnNeedDataRefresh()
+    {
+        adapterForSelectedLang.refreshData();
+        unSelectedLangAdapater.refreshData();
+        adapterForSelectedLang.notifyDataSetChanged();
+        unSelectedLangAdapater.notifyDataSetChanged();
+
     }
 }

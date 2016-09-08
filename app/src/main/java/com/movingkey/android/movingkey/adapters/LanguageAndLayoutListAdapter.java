@@ -11,6 +11,7 @@ import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.customLib.LangAndLayout;
 import com.movingkey.android.movingkey.customLib.MovingKeyLib;
 import com.movingkey.android.movingkey.customLib.MovingKeySetting;
+import com.movingkey.android.movingkey.interfaces.AdapterEvent;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,12 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
         this.context = context;
         this.isSelected = isSelected;
 
+        refreshData();
+    }
+
+    public void refreshData()
+    {
+
         final MovingKeyLib mvlib = MovingKeyLib.getSharedObj();
 
 
@@ -42,7 +49,6 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
         {
             mvlib.func02_loadMovingKeySettingFromFileAndLoadMemory(context);
         }
-
         MovingKeySetting curSetting = mvlib.func01_getSharedSetting();
 
         if(isSelected)
@@ -54,8 +60,6 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
 
             this.itemList = mvlib.func11_getUnSelectedLangAndLayouts(context);
         }
-
-
     }
 
     @Override
@@ -123,7 +127,7 @@ public class LanguageAndLayoutListAdapter extends BaseAdapter
             @Override
             public void onClick(View view)
             {
-                MovingKeyLib.getSharedObj().func15_showSelectLayoutPopup(context, oneItem);
+                MovingKeyLib.getSharedObj().func15_showSelectLayoutPopup(context, oneItem,(AdapterEvent) context);
             }
         });
 

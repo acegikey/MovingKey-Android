@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.customLib.LangAndLayout;
 import com.movingkey.android.movingkey.customLib.MovingKeyLib;
+import com.movingkey.android.movingkey.interfaces.AdapterEvent;
 
 import java.util.ArrayList;
 
@@ -28,12 +29,14 @@ public class SelectLayoutPopupListAdapter extends BaseAdapter
     LangAndLayout onelangAndLAyout;
     ArrayList<String> availableLayoutArr;
     Dialog dialog;
-    public SelectLayoutPopupListAdapter(Context context, LangAndLayout onelangAndLAyout, Dialog dialog)
+    AdapterEvent evenet;
+    public SelectLayoutPopupListAdapter(Context context, LangAndLayout onelangAndLAyout, Dialog dialog, AdapterEvent evenet)
     {
         this.context = context;
         this.onelangAndLAyout = onelangAndLAyout;
         this.availableLayoutArr = MovingKeyLib.getSharedObj().func13_getSupportLayoutArr(onelangAndLAyout.language);
         this.dialog = dialog;
+        this.evenet = evenet;
     }
 
 
@@ -97,14 +100,17 @@ public class SelectLayoutPopupListAdapter extends BaseAdapter
             public void onClick(View view)
             {
 
-                MovingKeyLib.getSharedObj().func14_changeLayoutWithLang(context,onelangAndLAyout,oneLayoutName);
+                MovingKeyLib.getSharedObj().func14_changeLayoutWithLang(view.getContext(),onelangAndLAyout,oneLayoutName);
                 dialog.dismiss();
+                evenet.OnNeedDataRefresh();
+
             }
         });
 
 
         return convertView;
     }
+
 
 
 }

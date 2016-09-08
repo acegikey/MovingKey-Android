@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.customLib.LangAndLayout;
 import com.movingkey.android.movingkey.customLib.MovingKeyLib;
+import com.movingkey.android.movingkey.interfaces.AdapterEvent;
 import com.movingkey.android.movingkey.openLib.draglist.ItemTouchHelperAdapter;
 import com.movingkey.android.movingkey.openLib.draglist.ItemTouchHelperViewHolder;
 import com.movingkey.android.movingkey.openLib.draglist.OnStartDragListener;
@@ -30,7 +31,7 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
 
 
 
-    private final List<LangAndLayout> mItems;
+    private List<LangAndLayout> mItems;
 
     private final OnStartDragListener mDragStartListener;
     Context context;
@@ -38,18 +39,25 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
     {
         context = context;
         mDragStartListener = dragStartListener;
+        refreshData();
+    }
+
+    public void refreshData()
+    {
         mItems = MovingKeyLib.getSharedObj().func01_getSharedSetting().setting04_selectedSetGroup;
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_lang_select01, parent, false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
         return itemViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder holder, final int position) {
+    public void onBindViewHolder(final ItemViewHolder holder, final int position)
+    {
 
         holder.textview_cur_lang_name.setText(MovingKeyLib.getSharedObj().func12_getLanguageFullNameFromCode(mItems.get(position).language));
         holder.textview_cur_layout_name.setText(mItems.get(position).layout);
@@ -72,7 +80,7 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
             @Override
             public void onClick(View view)
             {
-                MovingKeyLib.getSharedObj().func15_showSelectLayoutPopup(view.getContext(), mItems.get(position));
+                MovingKeyLib.getSharedObj().func15_showSelectLayoutPopup(view.getContext(), mItems.get(position), (AdapterEvent) view.getContext());
 
             }
         });
@@ -95,6 +103,8 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
     public int getItemCount() {
         return mItems.size();
     }
+
+
 
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
