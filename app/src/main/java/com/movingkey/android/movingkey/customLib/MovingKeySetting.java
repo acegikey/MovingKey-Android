@@ -132,6 +132,9 @@ public class MovingKeySetting
         return setting09_allLanguagesModels;
     }
 
+
+
+    public  ArrayList<String> setting10_autoTextArr;
 }
 
 

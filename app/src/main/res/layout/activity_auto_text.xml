@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.movingkey.android.movingkey.activitys.AutoTextActivity">
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:background="#4188c7"
+        >
+        <ImageButton
+            android:id="@+id/topBackButton"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/back"
+            android:layout_marginLeft="13dp"
+            android:layout_centerVertical="true"
+
+            />
+        <TextView
+            android:layout_toRightOf="@+id/topBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:text="Auto Text"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            />
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/add"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:layout_toLeftOf="@+id/btn_top_delete"
+            />
+        <ImageButton
+            android:id="@+id/btn_top_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="28dp"
+            android:src="@drawable/delite"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_autoText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topBar"
+        >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_autoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="37dp"
+            android:paddingRight="37dp"
+            android:paddingBottom="18dp"
+            android:paddingTop="18dp"
+            />
+
+    </ScrollView>
+</RelativeLayout>

@@ -78,6 +78,14 @@ public class MovingKeyLib
         defaultSettingGroup.setting07_capsLockActiveState = Const.BOOL_YES;
         defaultSettingGroup.setting08_autoCapActiveState = Const.BOOL_YES;
 
+        defaultSettingGroup.setting10_autoTextArr = new ArrayList<>();
+        defaultSettingGroup.setting10_autoTextArr.add("I'm driving right now. I'll get back to you later.");
+        defaultSettingGroup.setting10_autoTextArr.add("I'm in a meeting right now. I'll get back to you later.");
+        defaultSettingGroup.setting10_autoTextArr.add("I'm eating now. Can you please text me?");
+        defaultSettingGroup.setting10_autoTextArr.add("I'm at church right now. I'll get back to you later.");
+        defaultSettingGroup.setting10_autoTextArr.add("You can also save a long sentence as AutoText. Even multiple lines of text would be aligned and let you write a predefined text with a simple touch.");
+
+
 
 
 
@@ -101,15 +109,18 @@ public class MovingKeyLib
 
         Gson gson = new Gson();
         String jsonString_setting04_selectedSetGroup = gson.toJson(defaultSettingGroup.setting04_selectedSetGroup);
+        String jsonString_setting10_autoTextArr = gson.toJson(defaultSettingGroup.setting10_autoTextArr);
 
         String setting04_selectedSetGroup = pref.getString("setting04_selectedSetGroup",jsonString_setting04_selectedSetGroup);
         String setting05_isBalloonViewShow = pref.getString("setting05_isBalloonViewShow",defaultSettingGroup.setting05_isBalloonViewShow);
         String setting06_keyboardSize = pref.getString("setting06_keyboardSize",defaultSettingGroup.setting06_keyboardSize);
         String setting07_capsLockActiveState = pref.getString("setting07_capsLockActiveState",defaultSettingGroup.setting07_capsLockActiveState);
         String setting08_autoCapActiveState = pref.getString("setting08_autoCapActiveState",defaultSettingGroup.setting08_autoCapActiveState);
+        String setting10_autoTextArrString = pref.getString("jsonString_setting10_autoTextArr",jsonString_setting10_autoTextArr);
+
 
         Type collectionType = new TypeToken<ArrayList<LangAndLayout>>(){}.getType();
-
+        Type collectionTypeString = new TypeToken<ArrayList<String>>(){}.getType();
 
 
 
@@ -127,6 +138,7 @@ public class MovingKeyLib
         settingInMemory.setting06_keyboardSize = setting06_keyboardSize;
         settingInMemory.setting07_capsLockActiveState = setting07_capsLockActiveState;
         settingInMemory.setting08_autoCapActiveState = setting08_autoCapActiveState;
+        settingInMemory.setting10_autoTextArr = gson.fromJson(setting10_autoTextArrString,collectionTypeString);
 
 
     }
@@ -154,6 +166,8 @@ public class MovingKeyLib
             editor.putString("setting07_capsLockActiveState",settingInMemory.setting07_capsLockActiveState);
             editor.putString("setting08_autoCapActiveState",settingInMemory.setting08_autoCapActiveState);
 
+            String jsonString_setting10_autoText = gson.toJson(settingInMemory.setting10_autoTextArr);
+            editor.putString("setting10_autoTextArr",jsonString_setting10_autoText);
 
 
             editor.commit();
@@ -522,4 +536,10 @@ public class MovingKeyLib
         layoutSelectList.setAdapter(new SelectLayoutPopupListAdapter(context,langAndLayoutModel, dialog, evenet));
     }
 
+
+
+    public void func16_getAutoTextData(Context context)
+    {
+
+    }
 }

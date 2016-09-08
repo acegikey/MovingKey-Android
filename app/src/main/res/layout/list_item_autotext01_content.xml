@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        >
+        <TextView
+            android:id="@+id/textview_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/dragHandleBar"
+            android:text="test"
+            android:layout_marginRight="16dp"
+            />
+        <ImageView
+            android:id="@+id/dragHandleBar"
+            android:layout_width="24dp"
+            android:layout_height="18dp"
+            android:src="@drawable/align"
+            android:layout_alignParentRight="true"
+            />
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:text="Edit sentence"
+        android:textSize="12sp"
+        android:layout_below="@+id/textview_content"
+        android:textColor="#4188c7"
+        />
+    </RelativeLayout>
+</RelativeLayout>

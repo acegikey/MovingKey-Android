@@ -103,6 +103,19 @@ public class MainActivity extends AppCompatActivity
                 moveOtherActivity(LanguageAndLayoutActivity.class);
             }
         });
+
+
+
+        /// AutoText로 이동
+        menu02_auto.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                moveOtherActivity(AutoTextActivity.class);
+            }
+        });
+
     }
 
 

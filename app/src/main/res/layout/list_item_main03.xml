@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:text="keyboard size"
             android:layout_centerVertical="true"
+            android:textSize="17sp"
             />
 
 

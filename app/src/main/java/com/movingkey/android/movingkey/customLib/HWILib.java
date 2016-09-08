@@ -1,6 +1,7 @@
 package com.movingkey.android.movingkey.customLib;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -32,26 +33,39 @@ public class HWILib
     }
 
 
-    public void func02_setListViewHeightBasedOnChildren(ListView listView) {
+    public void func02_setListViewHeightBasedOnChildren(ListView listView)
+    {
         ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
+
+        if (listAdapter == null)
+        {
             // pre-condition
             return;
         }
 
-        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight=0;
+        View view = null;
+
         for (int i = 0; i < listAdapter.getCount(); i++)
         {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
+            view = listAdapter.getView(i, view, listView);
+
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+
         }
 
-        totalHeight += listView.getPaddingTop() + listView.getPaddingBottom();
-
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = totalHeight + ((listView.getDividerHeight()) * (listAdapter.getCount()));
+
+        Log.d("HWI","계산된 세로 크기 : "+params.height);
         listView.setLayoutParams(params);
         listView.requestLayout();
+
     }
+
 }
