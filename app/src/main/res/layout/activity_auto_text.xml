@@ -33,6 +33,7 @@
             />
 
         <ImageButton
+            android:id="@+id/btnAddAutoText"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/add"
@@ -40,6 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="13dp"
             android:layout_toLeftOf="@+id/btn_top_delete"
+            android:clickable="true"
             />
         <ImageButton
             android:id="@+id/btn_top_delete"

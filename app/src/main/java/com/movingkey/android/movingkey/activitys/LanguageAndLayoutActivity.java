@@ -39,12 +39,7 @@ public class LanguageAndLayoutActivity extends AppCompatActivity implements OnSt
 
         /// 선택된 언어+레이아웃 데이터 불러와서 리스트뷰에 셋팅
         Log.d("HWI","loadLanguageSettings 호출 테스트");
-        /*
-        LanguageAndLayoutListAdapter selectedLangAdapter = new LanguageAndLayoutListAdapter(LanguageAndLayoutActivity.this,true);
-        final ListView selectedListView = (ListView)findViewById(R.id.listview_selected);
-        selectedListView.setAdapter(selectedLangAdapter);
-        HWILib.getSharedObj().func02_setListViewHeightBasedOnChildren(selectedListView);
-        */
+
 
         /// 드래그 할 수 있는 뷰
         final RecyclerView listview_selected = (RecyclerView)findViewById(R.id.listview_selected);

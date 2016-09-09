@@ -63,17 +63,22 @@ public class AutoTextAdapter extends RecyclerView.Adapter<AutoTextAdapter.ItemVi
     }
 
     @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
+    public boolean onItemMove(int fromPosition, int toPosition)
+    {
         Collections.swap(autoTextArr, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        MovingKeyLib.getSharedObj().func03_saveCurrentMemorySettingToFile(context);
         return true;
     }
 
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(int position)
+    {
         autoTextArr.remove(position);
         notifyItemRemoved(position);
+
+        MovingKeyLib.getSharedObj().func03_saveCurrentMemorySettingToFile(context);
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder
@@ -101,59 +106,5 @@ public class AutoTextAdapter extends RecyclerView.Adapter<AutoTextAdapter.ItemVi
         }
     }
 
-    /*
-    private ArrayList<String> autoTextArr;
-    Context context;
 
-    public AutoTextAdapter(Context context)
-    {
-        this.context = context;
-        autoTextArr = MovingKeyLib.getSharedObj().func01_getSharedSetting().setting10_autoTextArr;
-
-
-
-    }
-
-    @Override
-    public int getCount()
-    {
-        return autoTextArr.size();
-    }
-
-    @Override
-    public Object getItem(int position)
-    {
-        if(autoTextArr != null)
-        {
-            return autoTextArr.get(position);
-
-        }
-        return null;
-
-    }
-
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
-        if(convertView == null)
-        {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = (RelativeLayout)inflater.inflate(R.layout.list_item_autotext01_content,parent,false);
-        }
-
-        String oneContent = autoTextArr.get(position);
-
-        TextView textview_content = (TextView)convertView.findViewById(R.id.textview_content);
-        textview_content.setText(oneContent);
-
-
-        return convertView;
-    }
-    */
 }

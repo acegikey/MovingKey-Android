@@ -116,7 +116,7 @@ public class MovingKeyLib
         String setting06_keyboardSize = pref.getString("setting06_keyboardSize",defaultSettingGroup.setting06_keyboardSize);
         String setting07_capsLockActiveState = pref.getString("setting07_capsLockActiveState",defaultSettingGroup.setting07_capsLockActiveState);
         String setting08_autoCapActiveState = pref.getString("setting08_autoCapActiveState",defaultSettingGroup.setting08_autoCapActiveState);
-        String setting10_autoTextArrString = pref.getString("jsonString_setting10_autoTextArr",jsonString_setting10_autoTextArr);
+        String setting10_autoTextArrString = pref.getString("setting10_autoTextArrString",jsonString_setting10_autoTextArr);
 
 
         Type collectionType = new TypeToken<ArrayList<LangAndLayout>>(){}.getType();

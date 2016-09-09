@@ -21,4 +21,8 @@ public class Const
     public static final String KEYBOARD_SIZE_SMALL = "KEYBOARD_SIZE_SMALL";
     public static final String KEYBOARD_SIZE_MEDIUM = "KEYBOARD_SIZE_MEDIUM";
     public static final String KEYBOARD_SIZE_LARGE = "KEYBOARD_SIZE_LARGE";
+
+
+    public static final String KEY_TYPE_DIRECTION_UP_DOWN = "KEY_TYPE_QWERTY_UP_DOWN";
+    public static final String KEY_TYPE_DIRECTION_LEFT_RIGHT = "KEY_TYPE_DIRECTION_LEFT_RIGHT";
 }

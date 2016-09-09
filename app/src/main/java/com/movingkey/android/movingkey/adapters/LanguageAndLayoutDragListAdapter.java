@@ -90,12 +90,14 @@ public class LanguageAndLayoutDragListAdapter extends RecyclerView.Adapter<Langu
     public void onItemDismiss(int position) {
         mItems.remove(position);
         notifyItemRemoved(position);
+        MovingKeyLib.getSharedObj().func03_saveCurrentMemorySettingToFile(context);
     }
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(mItems, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
+        MovingKeyLib.getSharedObj().func03_saveCurrentMemorySettingToFile(context);
         return true;
     }
 
