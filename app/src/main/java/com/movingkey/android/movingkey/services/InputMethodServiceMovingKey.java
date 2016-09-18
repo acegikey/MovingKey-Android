@@ -56,6 +56,7 @@ public class InputMethodServiceMovingKey extends InputMethodService
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         KeyboardContainerLayout keyboardContainer = (KeyboardContainerLayout)inflater.inflate(R.layout.keyboard_container_layout,null);
 
+
         return keyboardContainer;
 
 /// 보일러 플레이팅 소스 백업

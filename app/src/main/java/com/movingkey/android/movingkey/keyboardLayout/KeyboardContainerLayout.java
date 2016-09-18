@@ -33,6 +33,16 @@ public class KeyboardContainerLayout extends RelativeLayout
     {
         Log.d("HWI","KeyboardContainerLayout --> init() --> 호출 확인");
 
+
+        /// 키보드 레이아웃 (쿼티 / 하프쿼티 / 케토 / 천지인..)
+        //  언어 (영어 / 한국어 / 아랍어 ...)
+        // 스킨 (기본1, 기본2, 기본3 ...)
+
+        KeyboardLayoutQWERTY layout = new KeyboardLayoutQWERTY(context);
+
+        addView(layout);
+
+
     }
 
 
