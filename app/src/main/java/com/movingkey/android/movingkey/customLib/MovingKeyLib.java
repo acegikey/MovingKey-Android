@@ -542,4 +542,23 @@ public class MovingKeyLib
     {
 
     }
+
+
+    public Language func17_getLangStringArrFromLangAndLayout(LangAndLayout langAndLayout)
+    {
+        ArrayList<Language> langArr = MovingKeyLib.getSharedObj().func01_getSharedSetting().getSetting09_allLanguagesModels();
+        Language selectedLang = null;
+        for(int i=0; i < langArr.size(); i++)
+        {
+            Language oneLang = langArr.get(i);
+            if(oneLang.hwi00_languageCode.equals(langAndLayout.language))
+            {
+                selectedLang = oneLang;
+                break;
+            }
+        }
+
+
+        return selectedLang;
+    }
 }

@@ -92,7 +92,7 @@ public class HWILib
     public int func04_getRandomColor()
     {
         Random rnd = new Random();
-        int color = Color.argb(200, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        int color = Color.argb(125, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         return color;
     }
 
