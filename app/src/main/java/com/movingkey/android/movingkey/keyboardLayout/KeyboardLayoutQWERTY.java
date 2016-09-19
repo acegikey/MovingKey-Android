@@ -24,6 +24,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
     public ArrayList<Integer> firstLeftRightMarginArr;
 
     public ArrayList<Integer> smallTextColCountArr;
+    public ArrayList<Integer> smallTextFirstLeftRightMarginArr;
 
 
     public int rowCount;
@@ -145,12 +146,21 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         this.firstLeftRightMarginArr.add(8);
 
 
+
+
         this.smallTextColCountArr = new ArrayList<>();
         this.smallTextColCountArr.add(10);
         this.smallTextColCountArr.add(10);
         this.smallTextColCountArr.add(9);
         this.smallTextColCountArr.add(9);
         this.smallTextColCountArr.add(3);
+
+        this.smallTextFirstLeftRightMarginArr = new ArrayList<>();
+        this.smallTextFirstLeftRightMarginArr.add(8);
+        this.smallTextFirstLeftRightMarginArr.add(8);
+        this.smallTextFirstLeftRightMarginArr.add(26);
+        this.smallTextFirstLeftRightMarginArr.add(8);
+        this.smallTextFirstLeftRightMarginArr.add(48);
 
 
         /// 행 수
@@ -263,7 +273,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
                 if(indexOfString < selectedLang.hwi01_qwerty01_normalKey.size())
                 {
-                    selectedLang.hwi01_qwerty01_normalKey.get(indexOfString);
+                    String keyString = selectedLang.hwi01_qwerty01_normalKey.get(indexOfString);
                     indexOfString++;
 
                     oneParentLayout.matrixX = x;
@@ -274,14 +284,14 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     layoutParam.topMargin = makedMarginTop;
 
                     oneParentLayout.setLayoutParams(layoutParam);
-
+                    oneParentLayout.keyString = keyString;
 
 
 
 
                     oneParentLayout.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
 
-                    Log.d("HWI"," y : "+y+" x : "+x+"  makedWidth : "+makedWidth+"  makedHeight : "+makedHeight+" layoutParam.leftMargin : "+layoutParam.leftMargin+"  layoutParam.topMargin : "+layoutParam.topMargin);
+                    Log.d("HWI"," y : "+y+" x : "+x+"  makedWidth : "+makedWidth+"  makedHeight : "+makedHeight+" layoutParam.leftMargin : "+layoutParam.leftMargin+"  layoutParam.topMargin : "+layoutParam.topMargin+" keyString : "+keyString);
 
                     /// 패런트 뷰 추가
                     addView(oneParentLayout);
@@ -304,12 +314,15 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
         /// 스몰텍스트 뷰 배치
+        int indexOfSmallText = 0;
         for(int y=0; y < this.smallTextColCountArr.size(); y++)
         {
             int smallTextColCount = this.smallTextColCountArr.get(y);
-            int leftMarginOfFirstCol = (int)(this.firstLeftRightMarginArr.get(y) * screenWidth / 360.0);
+            int leftMarginOfFirstCol = (int)(this.smallTextFirstLeftRightMarginArr.get(y) * screenWidth / 360.0);
             int makedWidth = row1_parentKeyWidthNormalPX;
 
+            int makedMarginTop = 0;
+            int makedMarginLeft = 0;
 
             for(int x=0; x < smallTextColCount; x++)
             {
@@ -317,6 +330,10 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 oneSmallTextV.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
 
                 RelativeLayout.LayoutParams smallTextLayoutParam = new RelativeLayout.LayoutParams(makedWidth,smallTextHeightPX);
+
+                /// 개발중인 부분 백업
+//                makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
+//                smallTextLayoutParam.leftMargin =
 
 
 
