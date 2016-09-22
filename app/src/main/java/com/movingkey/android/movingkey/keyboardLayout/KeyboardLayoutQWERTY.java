@@ -38,7 +38,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
     public int row1_parentKeyHeightFirstRowPX;
     public int row1_parentKeyHeightNormalPX;
 
-    public int shift_del_keyHeightPX;
+    public int shift_del_ParentkeyWidthPX;
     public int numberKeyWidthPX;
     public int spacebarKeyWidthPX;
     public int returnKeyWidthPX;
@@ -177,7 +177,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
         row1_parentKeyHeightFirstRowPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / 224.0));
         row1_parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / 224.0)  );
-        shift_del_keyHeightPX = (int)( Math.round(((40.0 + 7.0) * screenWidth / 360.0))  );
+        shift_del_ParentkeyWidthPX = (int)( Math.round(((40.0 + 7.0) * screenWidth / 360.0))  );
         numberKeyWidthPX = (int)(Math.round(   (40.0 + 13.0/2)*screenWidth / 360.0 ));
         spacebarKeyWidthPX = (int)(Math.round( (133.0 + 13.0) * screenWidth / 360.0 ));
         returnKeyWidthPX = (int)(Math.round( (68.0 + 13.0) * screenWidth / 360.0 ));
@@ -224,12 +224,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 /// 쉬프트키 인덱스일 경우 쉬프트키 크기 적용
                 if( (y == shiftKeyIndexY && x == shiftKeyIndexX))
                 {
-                    makedWidth = shift_del_keyHeightPX;
+                    makedWidth = shift_del_ParentkeyWidthPX;
                 }
                 /// 딜리트키 인덱스일 경우 딜리트키 크기 적용 및 왼쪽 여백 추가
                 else if(delKeyIndexX == x && delKeyIndexY == y)
                 {
-                    makedWidth = shift_del_keyHeightPX;
+                    makedWidth = shift_del_ParentkeyWidthPX;
                     makedMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
                 }
                 /// 쉬프트키 인덱스 옆쪽 열일 경우 왼쪽 여백 추가 필요
@@ -310,7 +310,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
         /// 스몰텍스트 평균 세로크기는 동일하다
-        smallTextHeightPX = (int)(Math.round(16.0 * this.keyboardHeight / 224.0));
+        smallTextHeightPX = (int)(Math.round(17.0 * this.keyboardHeight / 224.0));
 
 
         /// 스몰텍스트 뷰 배치
@@ -327,16 +327,44 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
             for(int x=0; x < smallTextColCount; x++)
             {
                 SmallTextV oneSmallTextV = new SmallTextV(context);
-                oneSmallTextV.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
+                oneSmallTextV.setBackgroundColor(0xff00ff00);
+
+
+                makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
+                if (y==0)
+                {
+                    makedMarginTop = 0;
+                }
+                else if(y == (smallTextColCountArr.size() - 1))
+                {
+                    if(x == 0)
+                    {
+                        makedWidth =  shift_del_ParentkeyWidthPX;
+                    }
+                    else if(x == ( smallTextColCount - 1) )
+                    {
+                        makedWidth =  shift_del_ParentkeyWidthPX;
+                        makedMarginLeft = (leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x) + (shift_del_ParentkeyWidthPX - row1_parentKeyWidthNormalPX);
+                    }
+                    else
+                    {
+                        makedMarginLeft = (leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x) + (shift_del_ParentkeyWidthPX - row1_parentKeyWidthNormalPX);
+                    }
+
+                }
+                else
+                {
+                    makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / 224.0) * y )  );
+                }
 
                 RelativeLayout.LayoutParams smallTextLayoutParam = new RelativeLayout.LayoutParams(makedWidth,smallTextHeightPX);
+                smallTextLayoutParam.leftMargin = makedMarginLeft;
+                smallTextLayoutParam.topMargin = makedMarginTop;
 
-                /// 개발중인 부분 백업
-//                makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
-//                smallTextLayoutParam.leftMargin =
+                oneSmallTextV.setLayoutParams(smallTextLayoutParam);
 
-
-
+                /// 스몰텍스트 뷰 추가
+                addView(oneSmallTextV);
 
             }
 
