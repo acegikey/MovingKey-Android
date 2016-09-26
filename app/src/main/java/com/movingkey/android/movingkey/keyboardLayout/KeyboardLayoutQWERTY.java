@@ -3,6 +3,8 @@ package com.movingkey.android.movingkey.keyboardLayout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.movingkey.android.movingkey.customLib.HWILib;
@@ -132,6 +134,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
         Language selectedLang = MovingKeyLib.getSharedObj().func17_getLangStringArrFromLangAndLayout(langAndLayout);
 
+
+
+        this.setBackgroundColor(0xffc4d2df);
+
+
+
         /// 행 별 컬럼 카운트 삽임 --> 일반쿼티의 경우 10,9,9,5 개이다.
         this.colCountArr = new ArrayList<>();
         this.colCountArr.add(10);
@@ -182,6 +190,8 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         spacebarKeyWidthPX = (int)(Math.round( (133.0 + 13.0) * screenWidth / 360.0 ));
         returnKeyWidthPX = (int)(Math.round( (68.0 + 13.0) * screenWidth / 360.0 ));
 
+        childKeyHeightNormalPX = (int)( ((38.0) * keyboardHeight / 224.0)  );
+
 
         /// 일반키 배치
         int indexOfString = 0;
@@ -190,7 +200,9 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
             int columnCount = this.colCountArr.get(y);
             int makedMarginTop = 0;
-            int makedMarginLeft = 0;
+
+            int makedParentMarginLeft = 0;
+            int makedChildMarginLeft = 0;
 
             for( int x = 0; x < columnCount; x++)
             {
@@ -198,23 +210,36 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 ParentKey oneParentLayout = new ParentKey(this.context);
                 oneParentLayout.layoutType = langAndLayout.layout;
 
+                ChildKey oneChildKey = new ChildKey(this.context);
+                oneChildKey.layoutType = langAndLayout.layout;
 
-                int makedWidth = 0;
-                int makedHeight = 0;
+
+
+
+                int makedParentWidth = 0;
+                int makedChildWidth = 0;
+                int makedParentHeight = 0;
+                int makedChildHeight = 0;
+
 
                 int leftMarginOfFirstCol = (int)(this.firstLeftRightMarginArr.get(y) * screenWidth / 360.0);
 
 
                 /// 일반적인 경우 우선 적용
-                makedWidth = row1_parentKeyWidthNormalPX;
-                makedHeight = row1_parentKeyHeightNormalPX;
-                makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
+                makedParentWidth = row1_parentKeyWidthNormalPX;
+                makedParentHeight = row1_parentKeyHeightNormalPX;
 
-                /// 첫번째 행일 경우 상단 마진 0
+                makedChildWidth = makedParentWidth;
+                makedChildHeight = (int)(38.0 * keyboardHeight / 224.0 );
+
+                makedParentMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
+
+
                 if(y == 0)
                 {
+                    /// 첫번째 행일 경우 상단 마진 0
                     makedMarginTop = 0;
-                    makedHeight = row1_parentKeyHeightFirstRowPX;
+                    makedParentHeight = row1_parentKeyHeightFirstRowPX;
                 }
                 else
                 {
@@ -224,47 +249,49 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 /// 쉬프트키 인덱스일 경우 쉬프트키 크기 적용
                 if( (y == shiftKeyIndexY && x == shiftKeyIndexX))
                 {
-                    makedWidth = shift_del_ParentkeyWidthPX;
+                    makedParentWidth = shift_del_ParentkeyWidthPX;
                 }
                 /// 딜리트키 인덱스일 경우 딜리트키 크기 적용 및 왼쪽 여백 추가
                 else if(delKeyIndexX == x && delKeyIndexY == y)
                 {
-                    makedWidth = shift_del_ParentkeyWidthPX;
-                    makedMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
+                    makedParentWidth = shift_del_ParentkeyWidthPX;
+                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
+
                 }
                 /// 쉬프트키 인덱스 옆쪽 열일 경우 왼쪽 여백 추가 필요
                 else if(y == shiftKeyIndexY)
                 {
-                    makedMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
+                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
                 }
 
 
                 if(y == specialKeyRowY)
                 {
+
                     if(x== specialKeyNumberX)
                     {
-                        makedWidth = numberKeyWidthPX;
+                        makedParentWidth = numberKeyWidthPX;
                     }
                     else if(x== specialKeyEmoticonX)
                     {
-                        makedWidth = row1_parentKeyWidthNormalPX;
-                        makedMarginLeft = (int)(Math.round( (61.0 - 13.0/2.0) * screenWidth / 360.0 ));
+                        makedParentWidth = row1_parentKeyWidthNormalPX;
+                        makedParentMarginLeft = (int)(Math.round( (61.0 - 13.0/2.0) * screenWidth / 360.0 ));
 
                     }
                     else if(x== specialKeyGlobalX)
                     {
-                        makedWidth = row1_parentKeyWidthNormalPX;
-                        makedMarginLeft = (int)(Math.round( (96.0 - 13.0/2.0) * screenWidth / 360.0 ));
+                        makedParentWidth = row1_parentKeyWidthNormalPX;
+                        makedParentMarginLeft = (int)(Math.round( (96.0 - 13.0/2.0) * screenWidth / 360.0 ));
                     }
                     else if(x== specialKeySpacebarX)
                     {
-                        makedWidth = spacebarKeyWidthPX;
-                        makedMarginLeft = (int)(Math.round( (137.0 - 13.0) * screenWidth / 360.0 ));
+                        makedParentWidth = spacebarKeyWidthPX;
+                        makedParentMarginLeft = (int)(Math.round( (137.0 - (13.0/2.0)) * screenWidth / 360.0 ));
                     }
                     else if(x== specialKeyReturnX)
                     {
-                        makedWidth = returnKeyWidthPX;
-                        makedMarginLeft = (int)(Math.round( (284.0 - 13.0 ) * screenWidth / 360.0 ));
+                        makedParentWidth = returnKeyWidthPX;
+                        makedParentMarginLeft = (int)(Math.round( (284.0 - (13.0/2.0) ) * screenWidth / 360.0 ));
                     }
                 }
 
@@ -279,8 +306,8 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     oneParentLayout.matrixX = x;
                     oneParentLayout.matrixY = y;
 
-                    RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(makedWidth,makedHeight);
-                    layoutParam.leftMargin = makedMarginLeft;
+                    RelativeLayout.LayoutParams layoutParam = new RelativeLayout.LayoutParams(makedParentWidth,makedParentHeight);
+                    layoutParam.leftMargin = makedParentMarginLeft;
                     layoutParam.topMargin = makedMarginTop;
 
                     oneParentLayout.setLayoutParams(layoutParam);
@@ -291,7 +318,8 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
                     oneParentLayout.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
 
-                    Log.d("HWI"," y : "+y+" x : "+x+"  makedWidth : "+makedWidth+"  makedHeight : "+makedHeight+" layoutParam.leftMargin : "+layoutParam.leftMargin+"  layoutParam.topMargin : "+layoutParam.topMargin+" keyString : "+keyString);
+                    Log.d("HWI","일반키 패런트 출력");
+                    Log.d("HWI"," y : "+y+" x : "+x+"  makedParentWidth : "+makedParentWidth+"  makedParentHeight : "+makedParentHeight+" layoutParam.leftMargin : "+layoutParam.leftMargin+"  layoutParam.topMargin : "+layoutParam.topMargin+" keyString : "+keyString);
 
                     /// 패런트 뷰 추가
                     addView(oneParentLayout);
@@ -327,45 +355,96 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
             for(int x=0; x < smallTextColCount; x++)
             {
                 SmallTextV oneSmallTextV = new SmallTextV(context);
-                oneSmallTextV.setBackgroundColor(0xff00ff00);
 
+                /// 디버깅을 위해 랜덤컬러 입힘
+//                oneSmallTextV.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
+
+                String smallTextString = selectedLang.hwi01_qwerty03_smallText.get(indexOfSmallText );
+
+                oneSmallTextV.setTextSize(TypedValue.COMPLEX_UNIT_PX, (float)((float)(smallTextHeightPX) * 4.0 / 5.0) );
+                oneSmallTextV.setGravity(Gravity.CENTER);
+                oneSmallTextV.setTextColor(0xff4188c7);
+                oneSmallTextV.setText(smallTextString);
+                oneSmallTextV.keyString = smallTextString;
 
                 makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
+                int makedSmallTextHeight = smallTextHeightPX;
+
+                makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / 224.0) * y )  );
+
+
                 if (y==0)
                 {
+                    /// 첫번째 행일 경우
                     makedMarginTop = 0;
                 }
-                else if(y == (smallTextColCountArr.size() - 1))
+                else if(y == (smallTextColCountArr.size() - 2))
                 {
+                    /// 특수키들 위에 있는 스몰텍스트일 경우
+                    makedMarginLeft = (leftMarginOfFirstCol +  shift_del_ParentkeyWidthPX +( row1_parentKeyWidthNormalPX) * (x-1));
                     if(x == 0)
                     {
+                        /// 첫번째 열 일 경우
                         makedWidth =  shift_del_ParentkeyWidthPX;
+                        makedMarginLeft = leftMarginOfFirstCol;
                     }
                     else if(x == ( smallTextColCount - 1) )
                     {
+                        /// 마지막 열 일 경우
                         makedWidth =  shift_del_ParentkeyWidthPX;
-                        makedMarginLeft = (leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x) + (shift_del_ParentkeyWidthPX - row1_parentKeyWidthNormalPX);
                     }
                     else
                     {
-                        makedMarginLeft = (leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x) + (shift_del_ParentkeyWidthPX - row1_parentKeyWidthNormalPX);
+                        /// 그 외에 다른 열들일 경우
+                        makedWidth = row1_parentKeyWidthNormalPX;
+
+                    }
+                }
+
+                else if(y == (smallTextColCountArr.size() - 1))
+                {
+
+                    /// 마지막 행일 경우
+                    makedSmallTextHeight = childKeyHeightNormalPX;
+
+                    makedMarginTop = (this.smallTextColCountArr.size() - 2) * childKeyHeightNormalPX + (this.smallTextColCountArr.size() -1) * smallTextHeightPX;
+                    makedWidth =  (int)(Math.round( 13.0 * screenWidth / 360.0 ));
+                    if(x == 0)
+                    {
+                        /// 첫번째 열 일 경우 --> 언어1
+
+                        makedMarginLeft = (int)(Math.round( 48.0 * screenWidth / 360.0 ));
+                    }
+                    else if(x == 1 )
+                    {
+                        /// 두번째 열 일 경우 --> 언어2
+                        makedMarginLeft = (int)(Math.round( 124.0 * screenWidth / 360.0 ));
+                    }
+                    else
+                    {
+                        /// 세번째 열 일 경우 --> 언어2
+                        makedMarginLeft = (int)(Math.round( 270.0 * screenWidth / 360.0 ));
                     }
 
                 }
                 else
                 {
+                    /// 나머지 행들의 경우
                     makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / 224.0) * y )  );
                 }
 
-                RelativeLayout.LayoutParams smallTextLayoutParam = new RelativeLayout.LayoutParams(makedWidth,smallTextHeightPX);
+                RelativeLayout.LayoutParams smallTextLayoutParam = new RelativeLayout.LayoutParams(makedWidth,makedSmallTextHeight);
                 smallTextLayoutParam.leftMargin = makedMarginLeft;
                 smallTextLayoutParam.topMargin = makedMarginTop;
+
+                Log.d("HWI","스몰텍스트 출력");
+                Log.d("HWI"," x : "+x+"  y : "+y+"  makedMarginLeft : "+makedMarginLeft+"  makedMarginTop : "+makedMarginTop+" makedWidth : "+makedWidth+"  smallTextString : "+smallTextString);
 
                 oneSmallTextV.setLayoutParams(smallTextLayoutParam);
 
                 /// 스몰텍스트 뷰 추가
                 addView(oneSmallTextV);
-
+                indexOfSmallText++;
             }
 
 
