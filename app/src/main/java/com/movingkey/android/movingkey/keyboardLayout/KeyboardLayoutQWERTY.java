@@ -148,10 +148,10 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         this.colCountArr.add(5);
 
         this.firstLeftRightMarginArr = new ArrayList<>();
-        this.firstLeftRightMarginArr.add(8);
-        this.firstLeftRightMarginArr.add(26);
-        this.firstLeftRightMarginArr.add(8);
-        this.firstLeftRightMarginArr.add(8);
+        this.firstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
+        this.firstLeftRightMarginArr.add((int)(Math.round(26.0 - 7.0/2.0)));
+        this.firstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
+        this.firstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
 
 
 
@@ -164,11 +164,11 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         this.smallTextColCountArr.add(3);
 
         this.smallTextFirstLeftRightMarginArr = new ArrayList<>();
-        this.smallTextFirstLeftRightMarginArr.add(8);
-        this.smallTextFirstLeftRightMarginArr.add(8);
-        this.smallTextFirstLeftRightMarginArr.add(26);
-        this.smallTextFirstLeftRightMarginArr.add(8);
-        this.smallTextFirstLeftRightMarginArr.add(48);
+        this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
+        this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
+        this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(26.0 - 7.0/2.0)));
+        this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
+        this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(48.0 - 7.0/2.0)));
 
 
         /// 행 수
@@ -179,14 +179,16 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
 
-        row1_parentKeyWidthNormalPX = (int)(Math.round((((360.0 - 16.0)/10.0) * screenWidth / 360.0) ));
+        row1_parentKeyWidthNormalPX = (int)(Math.round((((360.0 - 16.0 + 7.0)/10.0) * screenWidth / 360.0) ));
 
 
 
         row1_parentKeyHeightFirstRowPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / 224.0));
         row1_parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / 224.0)  );
-        shift_del_ParentkeyWidthPX = (int)( Math.round(((40.0 + 7.0) * screenWidth / 360.0))  );
-        numberKeyWidthPX = (int)(Math.round(   (40.0 + 13.0/2)*screenWidth / 360.0 ));
+        shift_del_ParentkeyWidthPX = (int)( Math.round(((40.0 + 13.0 ) * screenWidth / 360.0))  );
+
+        numberKeyWidthPX = shift_del_ParentkeyWidthPX;
+
         spacebarKeyWidthPX = (int)(Math.round( (133.0 + 13.0) * screenWidth / 360.0 ));
         returnKeyWidthPX = (int)(Math.round( (68.0 + 13.0) * screenWidth / 360.0 ));
 
@@ -250,6 +252,9 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     makedMarginParentTop =  row1_parentKeyHeightFirstRowPX +  row1_parentKeyHeightNormalPX * (y-1);
                 }
 
+
+
+
                 /// 쉬프트키 인덱스일 경우 쉬프트키 크기 적용
                 if( (y == shiftKeyIndexY && x == shiftKeyIndexX))
                 {
@@ -259,14 +264,20 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 else if(delKeyIndexX == x && delKeyIndexY == y)
                 {
                     makedParentWidth = shift_del_ParentkeyWidthPX;
-                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
+                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0 + 7.0) * screenWidth / 360.0));
 
                 }
                 /// 쉬프트키 인덱스 옆쪽 열일 경우 왼쪽 여백 추가 필요
                 else if(y == shiftKeyIndexY)
                 {
-                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0) * screenWidth / 360.0));
+                    makedParentMarginLeft += (int)(Math.round((40.0 - 28.0 + 7.0) * screenWidth / 360.0));
                 }
+
+
+                makedChildWidth = makedParentWidth - (int)(Math.round( (7.0) * screenWidth / 360.0 )) ;
+
+
+                makedChildMarginLeft = makedParentMarginLeft + (int)(Math.round( (7.0/2.0) * screenWidth / 360.0 )) ;
 
 
                 if(y == specialKeyRowY)
@@ -275,32 +286,45 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     if(x== specialKeyNumberX)
                     {
                         makedParentWidth = numberKeyWidthPX;
+                        makedChildWidth = (int)(Math.round( (40.0) * screenWidth / 360.0 )) ;
                     }
                     else if(x== specialKeyEmoticonX)
                     {
                         makedParentWidth = row1_parentKeyWidthNormalPX;
-                        makedParentMarginLeft = (int)(Math.round( (61.0 - 13.0/2.0) * screenWidth / 360.0 ));
+                        makedParentMarginLeft = (int)(Math.round( (61.0 - 12.0/2.0) * screenWidth / 360.0 ));
+                        makedChildMarginLeft = makedParentMarginLeft + (int)(Math.round( (12.0/2.0) * screenWidth / 360.0 )) ;
 
                     }
                     else if(x== specialKeyGlobalX)
                     {
                         makedParentWidth = row1_parentKeyWidthNormalPX;
-                        makedParentMarginLeft = (int)(Math.round( (96.0 - 13.0/2.0) * screenWidth / 360.0 ));
+                        makedParentMarginLeft = (int)(Math.round( (96.0) * screenWidth / 360.0 ));
+                        makedChildMarginLeft = makedParentMarginLeft;
                     }
                     else if(x== specialKeySpacebarX)
                     {
                         makedParentWidth = spacebarKeyWidthPX;
+                        makedChildWidth =  (int)(Math.round(133.0 * screenWidth / 360.0));
                         makedParentMarginLeft = (int)(Math.round( (137.0 - (13.0/2.0)) * screenWidth / 360.0 ));
+                        makedChildMarginLeft = makedParentMarginLeft + (int)(Math.round( (13.0/2.0) * screenWidth / 360.0 ));
                     }
                     else if(x== specialKeyReturnX)
                     {
                         makedParentWidth = returnKeyWidthPX;
                         makedParentMarginLeft = (int)(Math.round( (284.0 - (13.0/2.0) ) * screenWidth / 360.0 ));
+                        makedChildMarginLeft = makedParentMarginLeft + (int)(Math.round( (13.0/2.0) * screenWidth / 360.0 ));
+                        makedChildWidth =  (int)(Math.round(68.0 * screenWidth / 360.0));
                     }
                 }
 
 
-                makedChildWidth = makedParentWidth;
+
+
+
+
+
+
+
 
                 if(indexOfString < selectedLang.hwi01_qwerty01_normalKey.size())
                 {
@@ -320,7 +344,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     layoutParamParent.leftMargin = makedParentMarginLeft;
                     layoutParamParent.topMargin = makedMarginParentTop;
 
-                    makedChildMarginLeft = makedParentMarginLeft;
+
 
 
                     RelativeLayout.LayoutParams layoutParamChild = new RelativeLayout.LayoutParams(makedChildWidth,makedChildHeight);
@@ -356,6 +380,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
             }
 
         }
+
+
+
+
+
+
 
 
 

@@ -8,6 +8,8 @@ import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.movingkey.android.movingkey.R;
+
 /**
  * Created by iankim on 2016. 9. 26..
  */
@@ -57,6 +59,8 @@ public class ChildKey extends ParentKey
                 ChildKey.this.keyTextV.setGravity(Gravity.CENTER);
                 ChildKey.this.keyTextV.setTextColor(0xff4188c7);
                 ChildKey.this.keyTextV.setTextSize(TypedValue.COMPLEX_UNIT_PX,(int)(Math.round(ChildKey.this.getHeight() * 2.0 / 5.0)));
+                ChildKey.this.setBackgroundResource(R.drawable.rectangle_2);
+
             }
         });
 
