@@ -37,28 +37,20 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
     public int row1_parentKeyWidthNormalPX;
 
-    public int row1_parentKeyHeightFirstRowPX;
-    public int row1_parentKeyHeightNormalPX;
+    public int row1_parentKeyHeightPX;
+    public int parentKeyHeightNormalPX;
 
-    public int shift_del_ParentkeyWidthPX;
-    public int numberKeyWidthPX;
+    public int shift_del_number_ParentkeyWidthPX;
+    
     public int spacebarKeyWidthPX;
     public int returnKeyWidthPX;
 
 
     public int smallTextHeightPX;
 
-    public int row2_firstLeftRightMarginPX;
-    public int row2_otherLeftRightMarginPX;
-
-    public int childKeyWidthNormalPX;
     public int childKeyHeightNormalPX;
 
-    public int parentShift_123_Delete_KeyWidthPX;
-    public int parentShift_123_Delete_KeyHeightPX;
 
-    public int childShift_123_Delete_KeyWidthNormalPX;
-    public int childShift_123_Delete_KeyHeightNormalPX;
 
     public int screenWidth;
     public int screenHeight;
@@ -111,6 +103,8 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         // 제플린 사이즈 = 360x640
         // 갤럭시 알파 = 720x1280
 
+
+
         int layoutWidth = HWILib.getSharedObj().func03_getScreenSizeWidth(context);
         keyboardHeight = (int)((screenHeight * 224.0) /640.0);
 
@@ -136,7 +130,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
 
-        this.setBackgroundColor(0xffc4d2df);
+
 
 
 
@@ -147,6 +141,9 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         this.colCountArr.add(9);
         this.colCountArr.add(5);
 
+
+
+        /// 행 별 첫번째 Left Margin 이다 --> -7.0/2.0 을 한 이유는 터치되는 영역을 그만큼 늘렸기 때문이다.
         this.firstLeftRightMarginArr = new ArrayList<>();
         this.firstLeftRightMarginArr.add((int)(Math.round(8.0 - 7.0/2.0)));
         this.firstLeftRightMarginArr.add((int)(Math.round(26.0 - 7.0/2.0)));
@@ -171,23 +168,27 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         this.smallTextFirstLeftRightMarginArr.add((int)(Math.round(48.0 - 7.0/2.0)));
 
 
+
+
+
         /// 행 수
         rowCount = this.colCountArr.size();
 
-        /// 첫번째 행의 상단 마진
+        /// 첫번째 행의 상단 마진  --> 이 부분만 특수하게 좀 길다.
         row1_topMarginPX = (int)(17.0 * keyboardHeight / 224.0);
 
 
-
+        /// 패런트키의 너비
         row1_parentKeyWidthNormalPX = (int)(Math.round((((360.0 - 16.0 + 7.0)/10.0) * screenWidth / 360.0) ));
 
 
 
-        row1_parentKeyHeightFirstRowPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / 224.0));
-        row1_parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / 224.0)  );
-        shift_del_ParentkeyWidthPX = (int)( Math.round(((40.0 + 13.0 ) * screenWidth / 360.0))  );
+        row1_parentKeyHeightPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / 224.0));
+        
+        parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / 224.0)  );
+        shift_del_number_ParentkeyWidthPX = (int)( Math.round(((40.0 + 13.0 ) * screenWidth / 360.0))  );
 
-        numberKeyWidthPX = shift_del_ParentkeyWidthPX;
+
 
         spacebarKeyWidthPX = (int)(Math.round( (133.0 + 13.0) * screenWidth / 360.0 ));
         returnKeyWidthPX = (int)(Math.round( (68.0 + 13.0) * screenWidth / 360.0 ));
@@ -230,7 +231,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
                 /// 일반적인 경우 우선 적용
                 makedParentWidth = row1_parentKeyWidthNormalPX;
-                makedParentHeight = row1_parentKeyHeightNormalPX;
+                makedParentHeight = parentKeyHeightNormalPX;
 
 
                 makedChildHeight = (int)(38.0 * keyboardHeight / 224.0 );
@@ -244,12 +245,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 {
                     /// 첫번째 행일 경우 상단 마진 0
                     makedMarginParentTop = 0;
-                    makedParentHeight = row1_parentKeyHeightFirstRowPX;
+                    makedParentHeight = row1_parentKeyHeightPX;
 
                 }
                 else
                 {
-                    makedMarginParentTop =  row1_parentKeyHeightFirstRowPX +  row1_parentKeyHeightNormalPX * (y-1);
+                    makedMarginParentTop =  row1_parentKeyHeightPX +  parentKeyHeightNormalPX * (y-1);
                 }
 
 
@@ -258,12 +259,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 /// 쉬프트키 인덱스일 경우 쉬프트키 크기 적용
                 if( (y == shiftKeyIndexY && x == shiftKeyIndexX))
                 {
-                    makedParentWidth = shift_del_ParentkeyWidthPX;
+                    makedParentWidth = shift_del_number_ParentkeyWidthPX;
                 }
                 /// 딜리트키 인덱스일 경우 딜리트키 크기 적용 및 왼쪽 여백 추가
                 else if(delKeyIndexX == x && delKeyIndexY == y)
                 {
-                    makedParentWidth = shift_del_ParentkeyWidthPX;
+                    makedParentWidth = shift_del_number_ParentkeyWidthPX;
                     makedParentMarginLeft += (int)(Math.round((40.0 - 28.0 + 7.0) * screenWidth / 360.0));
 
                 }
@@ -285,7 +286,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
                     if(x== specialKeyNumberX)
                     {
-                        makedParentWidth = numberKeyWidthPX;
+                        makedParentWidth = shift_del_number_ParentkeyWidthPX;
                         makedChildWidth = (int)(Math.round( (40.0) * screenWidth / 360.0 )) ;
                     }
                     else if(x== specialKeyEmoticonX)
@@ -356,8 +357,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     oneParentLayout.keyString = keyString;
 
                     oneChildKey.setLayoutParams(layoutParamChild);
-                    oneChildKey.keyString = keyString;
-                    oneChildKey.setTextView();
+                    oneChildKey.setTextView(keyString);
 
                     Log.d("HWI","랜덤 색상확인");
 //                    oneChildKey.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
@@ -442,17 +442,17 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 else if(y == (smallTextColCountArr.size() - 2))
                 {
                     /// 특수키들 위에 있는 스몰텍스트일 경우
-                    makedMarginLeft = (leftMarginOfFirstCol +  shift_del_ParentkeyWidthPX +( row1_parentKeyWidthNormalPX) * (x-1));
+                    makedMarginLeft = (leftMarginOfFirstCol +  shift_del_number_ParentkeyWidthPX +( row1_parentKeyWidthNormalPX) * (x-1));
                     if(x == 0)
                     {
                         /// 첫번째 열 일 경우
-                        makedWidth =  shift_del_ParentkeyWidthPX;
+                        makedWidth =  shift_del_number_ParentkeyWidthPX;
                         makedMarginLeft = leftMarginOfFirstCol;
                     }
                     else if(x == ( smallTextColCount - 1) )
                     {
                         /// 마지막 열 일 경우
-                        makedWidth =  shift_del_ParentkeyWidthPX;
+                        makedWidth =  shift_del_number_ParentkeyWidthPX;
                     }
                     else
                     {
@@ -511,6 +511,9 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
         }
 
+
+        /// 테마 관련 --> 나중에 모듈화 필요
+        this.setBackgroundColor(0xffc4d2df);
 
     }
 }
