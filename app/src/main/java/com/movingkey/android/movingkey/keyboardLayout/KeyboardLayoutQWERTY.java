@@ -7,6 +7,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 
+import com.movingkey.android.movingkey.customLib.Const;
 import com.movingkey.android.movingkey.customLib.HWILib;
 import com.movingkey.android.movingkey.customLib.LangAndLayout;
 import com.movingkey.android.movingkey.customLib.MovingKeyLib;
@@ -72,7 +73,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
     public int specialKeySpacebarX = 3;
     public int specialKeyReturnX = 4;
 
-
+    public float currentKeyboardTotalHeight;
 
     public KeyboardLayoutQWERTY(Context context)
     {
@@ -103,10 +104,10 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         // 제플린 사이즈 = 360x640
         // 갤럭시 알파 = 720x1280
 
-
+        currentKeyboardTotalHeight = MovingKeyLib.getSharedObj().func18_getKeyboardHeight();
 
         int layoutWidth = HWILib.getSharedObj().func03_getScreenSizeWidth(context);
-        keyboardHeight = (int)((screenHeight * 224.0) /640.0);
+        keyboardHeight = (int)((screenHeight * currentKeyboardTotalHeight) /640.0);
 
         Log.d("HWI","키보드 높이 -->  keyboardHeight : "+keyboardHeight);
 
@@ -175,7 +176,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         rowCount = this.colCountArr.size();
 
         /// 첫번째 행의 상단 마진  --> 이 부분만 특수하게 좀 길다.
-        row1_topMarginPX = (int)(17.0 * keyboardHeight / 224.0);
+        row1_topMarginPX = (int)(17.0 * keyboardHeight / currentKeyboardTotalHeight);
 
 
         /// 패런트키의 너비
@@ -183,9 +184,9 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
 
-        row1_parentKeyHeightPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / 224.0));
+        row1_parentKeyHeightPX = (int)(((17.0 + 17.0/2.0 + 38.0) *  keyboardHeight / currentKeyboardTotalHeight));
         
-        parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / 224.0)  );
+        parentKeyHeightNormalPX = (int)( ((17.0 + 38.0) * keyboardHeight / currentKeyboardTotalHeight)  );
         shift_del_number_ParentkeyWidthPX = (int)( Math.round(((40.0 + 13.0 ) * screenWidth / 360.0))  );
 
 
@@ -193,7 +194,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
         spacebarKeyWidthPX = (int)(Math.round( (133.0 + 13.0) * screenWidth / 360.0 ));
         returnKeyWidthPX = (int)(Math.round( (68.0 + 13.0) * screenWidth / 360.0 ));
 
-        childKeyHeightNormalPX = (int)( ((38.0) * keyboardHeight / 224.0)  );
+        childKeyHeightNormalPX = (int)( ((38.0) * keyboardHeight / currentKeyboardTotalHeight)  );
 
 
         /// 일반키 배치
@@ -234,19 +235,18 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 makedParentHeight = parentKeyHeightNormalPX;
 
 
-                makedChildHeight = (int)(38.0 * keyboardHeight / 224.0 );
+                makedChildHeight = (int)(38.0 * keyboardHeight / currentKeyboardTotalHeight );
 
                 makedParentMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
 
 
-                makedMarginChildTop = (int)(17.0 * keyboardHeight / 224.0 ) + (int)(  (17.0 + 38.0) * keyboardHeight / 224.0 )  * y;
+                makedMarginChildTop = (int)(17.0 * keyboardHeight / currentKeyboardTotalHeight ) + (int)(  (17.0 + 38.0) * keyboardHeight / currentKeyboardTotalHeight )  * y;
 
                 if(y == 0)
                 {
                     /// 첫번째 행일 경우 상단 마진 0
                     makedMarginParentTop = 0;
                     makedParentHeight = row1_parentKeyHeightPX;
-
                 }
                 else
                 {
@@ -321,6 +321,32 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
 
+
+
+                /// 키의 움직임 --> 디렉션 할당
+                Const.DirectionType directionType;
+                if(y == 0)
+                {
+                    directionType = Const.DirectionType.UP_DOWN;
+                }
+                else if (y == 1)
+                {
+                    directionType = Const.DirectionType.LEFTUP_RIGHTUP_DOWN;
+                }
+                else if(y == 2)
+                {
+                    directionType = Const.DirectionType.UP_DOWN;
+                }
+                else if (y == (colCountArr.size() - 1))
+                {
+                    directionType = Const.DirectionType.LEFT_RIGHT;
+                }
+                else
+                {
+                    directionType = Const.DirectionType.UP_DOWN;
+                }
+
+                oneChildKey.directionType = directionType;
 
 
 
@@ -399,7 +425,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
 
 
         /// 스몰텍스트 평균 세로크기는 동일하다
-        smallTextHeightPX = (int)(Math.round(17.0 * this.keyboardHeight / 224.0));
+        smallTextHeightPX = (int)(Math.round(17.0 * this.keyboardHeight / currentKeyboardTotalHeight));
 
 
         /// 스몰텍스트 뷰 배치
@@ -431,7 +457,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 makedMarginLeft = leftMarginOfFirstCol + ( row1_parentKeyWidthNormalPX) * x;
                 int makedSmallTextHeight = smallTextHeightPX;
 
-                makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / 224.0) * y )  );
+                makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / currentKeyboardTotalHeight) * y )  );
 
 
                 if (y==0)
@@ -491,7 +517,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 else
                 {
                     /// 나머지 행들의 경우
-                    makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / 224.0) * y )  );
+                    makedMarginTop = (int)(  Math.round(  ((17 + 38) * this.keyboardHeight / currentKeyboardTotalHeight) * y )  );
                 }
 
                 RelativeLayout.LayoutParams smallTextLayoutParam = new RelativeLayout.LayoutParams(makedWidth,makedSmallTextHeight);

@@ -11,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.movingkey.android.movingkey.R;
+import com.movingkey.android.movingkey.customLib.Const;
+import com.movingkey.android.movingkey.customLib.HWILib;
+import com.movingkey.android.movingkey.customLib.MovingKeyLib;
 
 /**
  * Created by iankim on 2016. 9. 26..
@@ -19,8 +22,17 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 {
     TextView keyTextV;
 
-    float firstLeftMargin;
-    float firstTopMargin;
+    int firstLeftMargin;
+    int firstTopMargin;
+
+    int moveDistanceLimit;
+
+
+    Const.DirectionType directionType;
+
+
+
+
 
     public ChildKey(Context context)
     {
@@ -68,10 +80,22 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
                 ChildKey.this.keyTextV.setGravity(Gravity.CENTER);
                 ChildKey.this.keyTextV.setTextColor(0xff4188c7);
                 ChildKey.this.keyTextV.setTextSize(TypedValue.COMPLEX_UNIT_PX,(int)(Math.round(ChildKey.this.getHeight() * 2.0 / 5.0)));
+                ChildKey.this.keyTextV.setClickable(false);
                 ChildKey.this.setBackgroundResource(R.drawable.rectangle_2);
 
                 ChildKey.this.firstLeftMargin = ((LayoutParams)(ChildKey.this.getLayoutParams())).leftMargin;
-                ChildKey.this.firstLeftMargin = ((LayoutParams)(ChildKey.this.getLayoutParams())).rightMargin;
+                ChildKey.this.firstTopMargin = ((LayoutParams)(ChildKey.this.getLayoutParams())).topMargin;
+
+
+
+                float currentKeyboardTotalHeight = MovingKeyLib.getSharedObj().func18_getKeyboardHeight();
+                float calculatedKeyboardTotalHeight = (int)((HWILib.getSharedObj().func03_getScreenSizeHeight(context) * currentKeyboardTotalHeight) /640.0);
+
+
+
+                moveDistanceLimit = (int)(Math.round(  (calculatedKeyboardTotalHeight * 17.0)/224.0 ));
+
+
 
             }
         });
@@ -80,38 +104,81 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
 
 
-    float firstEnterTouchX;
-    float firstEnterTouchY;
+    int firstEnterTouchX;
+    int firstEnterTouchY;
 
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
-        float eventX = event.getX();
-        float eventY = event.getY();
+        int eventX = (int)(event.getRawX());
+        int eventY = (int)(event.getRawY());
 
 
         // get masked (not specific to a pointer) action
-        int maskedAction = event.getActionMasked();
 
-        Log.d("HWI","좌표 추적 --> X : "+eventX+"  Y : "+eventY);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)(ChildKey.this.getLayoutParams());
 
-        switch (maskedAction)
+        int makedLeftMargin = 0;
+        int makedTopMargin = 0;
+
+        int changeX = 0;
+        int changeY = 0;
+
+        switch (event.getAction())
         {
 
             case MotionEvent.ACTION_DOWN:
             {
                 firstEnterTouchX = eventX;
-                firstEnterTouchX = eventY;
+                firstEnterTouchY = eventY;
+
+                makedLeftMargin = ChildKey.this.firstLeftMargin + changeX;
+                makedTopMargin= ChildKey.this.firstTopMargin+ changeY;
+
+
                 break;
             }
             case MotionEvent.ACTION_MOVE:
             {
-                 float changeX = eventX - firstEnterTouchX;
-                float changey = eventY - firstEnterTouchY;
+                changeX = eventX - firstEnterTouchX;
+                changeY = eventY - firstEnterTouchY;
+
+
+                makedLeftMargin = ChildKey.this.firstLeftMargin + changeX;
+                makedTopMargin= ChildKey.this.firstTopMargin+ changeY;
+
+                Log.d("HWI","변화량 조사 --> changeX : "+changeX+"  changeY : "+changeY+"  moveDistanceLimit : "+moveDistanceLimit);
+
+                /// 범위 이상 이동하지 못하도록 제어
+                if(changeX > 0 && changeX > moveDistanceLimit)
+                {
+                    makedLeftMargin = ChildKey.this.firstLeftMargin + moveDistanceLimit;
+                }
+
+                if(changeX < 0 && changeX < moveDistanceLimit * -1)
+                {
+                    makedLeftMargin = ChildKey.this.firstLeftMargin - moveDistanceLimit;
+                }
+
+                if(changeY > 0 && changeY > moveDistanceLimit)
+                {
+                    makedTopMargin = ChildKey.this.firstTopMargin + moveDistanceLimit;
+                }
+
+                if(changeY < 0 && changeY < moveDistanceLimit * -1)
+                {
+                    makedTopMargin = ChildKey.this.firstTopMargin - moveDistanceLimit;
+                }
+
+
+
                 break;
             }
             case MotionEvent.ACTION_UP:
             {
+                makedLeftMargin = ChildKey.this.firstLeftMargin;
+                makedTopMargin = ChildKey.this.firstTopMargin;
+
                 break;
             }
             case MotionEvent.ACTION_POINTER_UP:
@@ -123,10 +190,35 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
                 break;
             }
+
         }
 
 
-        invalidate();
+        /// 움직임 제약조건 체크 필요
+        switch (ChildKey.this.directionType)
+        {
+            case UP_DOWN:
+                makedLeftMargin =  firstLeftMargin;
+                break;
+            case LEFTUP_RIGHTUP_DOWN:
+
+                /// 역삼각형 로직 적용
+
+
+                break;
+            case LEFT_RIGHT:
+                makedTopMargin = firstTopMargin;
+                break;
+            case ALL:
+                break;
+        }
+
+        Log.d("HWI","makedLeftMargin : "+makedLeftMargin+"  makedTopMargin : "+makedTopMargin);
+
+        params.leftMargin = makedLeftMargin;
+        params.topMargin = makedTopMargin;
+
+        ChildKey.this.setLayoutParams(params);
 
 
 

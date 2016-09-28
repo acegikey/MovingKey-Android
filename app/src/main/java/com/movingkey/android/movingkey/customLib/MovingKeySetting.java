@@ -135,6 +135,8 @@ public class MovingKeySetting
 
 
     public  ArrayList<String> setting10_autoTextArr;
+
+
 }
 
 

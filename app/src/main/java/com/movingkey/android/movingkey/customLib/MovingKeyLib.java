@@ -30,9 +30,23 @@ public class MovingKeyLib
 {
 
 
+
+
+    public int keyboardSizeMiddle = 224;
+
+
+
     private static MovingKeyLib sharedInstance;
 
     private MovingKeySetting settingInMemory;
+
+
+
+
+
+
+
+
 
     public static MovingKeyLib getSharedObj()
     {
@@ -42,6 +56,10 @@ public class MovingKeyLib
         }
         return sharedInstance;
     }
+
+
+
+
 
 
 
@@ -560,5 +578,25 @@ public class MovingKeyLib
 
 
         return selectedLang;
+    }
+
+
+    public float func18_getKeyboardHeight()
+    {
+        if(settingInMemory.setting06_keyboardSize.equals(Const.KEYBOARD_SIZE_SMALL))
+        {
+            return Const.VALUE_KEYBOARD_SIZE_SMALL;
+        }
+        else if(settingInMemory.setting06_keyboardSize.equals(Const.KEYBOARD_SIZE_MEDIUM))
+        {
+            return Const.VALUE_KEYBOARD_SIZE_MEDIUM;
+        }
+        else if(settingInMemory.setting06_keyboardSize.equals(Const.KEYBOARD_SIZE_LARGE))
+        {
+            return Const.VALUE_KEYBOARD_SIZE_LARGE;
+        }
+
+        return Const.VALUE_KEYBOARD_SIZE_MEDIUM;
+
     }
 }

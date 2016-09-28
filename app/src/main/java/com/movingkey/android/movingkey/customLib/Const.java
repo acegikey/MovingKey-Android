@@ -22,7 +22,17 @@ public class Const
     public static final String KEYBOARD_SIZE_MEDIUM = "KEYBOARD_SIZE_MEDIUM";
     public static final String KEYBOARD_SIZE_LARGE = "KEYBOARD_SIZE_LARGE";
 
+    public static final float VALUE_KEYBOARD_SIZE_SMALL = 224;
+    public static final float VALUE_KEYBOARD_SIZE_MEDIUM = 224;
+    public static final float VALUE_KEYBOARD_SIZE_LARGE = 224;
 
-    public static final String KEY_TYPE_DIRECTION_UP_DOWN = "KEY_TYPE_QWERTY_UP_DOWN";
-    public static final String KEY_TYPE_DIRECTION_LEFT_RIGHT = "KEY_TYPE_DIRECTION_LEFT_RIGHT";
+
+
+    public enum DirectionType
+    {
+        UP_DOWN,
+        LEFT_RIGHT,
+        LEFTUP_RIGHTUP_DOWN,
+        ALL
+    }
 }
