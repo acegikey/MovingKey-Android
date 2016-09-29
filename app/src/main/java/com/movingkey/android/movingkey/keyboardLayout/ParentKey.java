@@ -2,20 +2,19 @@ package com.movingkey.android.movingkey.keyboardLayout;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.movingkey.android.movingkey.customLib.Const;
+import com.movingkey.android.movingkey.customLib.MVInputManager;
 
 /**
  * Created by iankim on 2016. 9. 19..
  */
-public class ParentKey extends RelativeLayout
+public class ParentKey extends RelativeLayout implements View.OnClickListener
 {
     Context context;
-
-    int matrixX;
-    int matrixY;
-
-    String keyString;
-    String layoutType;
+    public ChildKey childKey;
 
     public ParentKey(Context context)
     {
@@ -42,4 +41,16 @@ public class ParentKey extends RelativeLayout
     }
 
 
+    @Override
+    public void onClick(View view)
+    {
+        if(childKey.keyType == Const.KeyType.DEL)
+        {
+            MVInputManager.getSharedObj().addNormalText(childKey.keyString);
+        }
+        else if(childKey.keyType == Const.KeyType.DEL)
+        {
+            MVInputManager.getSharedObj().delete();
+        }
+    }
 }

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 
 import com.movingkey.android.movingkey.R;
-import com.movingkey.android.movingkey.customLib.MovingKeyLib;
+import com.movingkey.android.movingkey.customLib.MVInputManager;
 import com.movingkey.android.movingkey.keyboardLayout.KeyboardContainerLayout;
 
 public class InputMethodServiceMovingKey extends InputMethodService
@@ -53,9 +53,9 @@ public class InputMethodServiceMovingKey extends InputMethodService
     {
         Log.d("HWI","onCreateInputView 호출 확인 --> 키보드 나올 때 05 ---> 정석은 여기서 키보드 뷰를 리턴한다");
 
-
         /// 인풋커넥션 삽입 --> 키보드 사용시 필요함
-        MovingKeyLib.getSharedObj().inputConnection = getCurrentInputConnection();
+        MVInputManager.getSharedObj().ipc = getCurrentInputConnection();
+
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         KeyboardContainerLayout keyboardContainer = (KeyboardContainerLayout)inflater.inflate(R.layout.keyboard_container_layout,null);

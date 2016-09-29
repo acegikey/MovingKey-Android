@@ -212,14 +212,12 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
             for( int x = 0; x < columnCount; x++)
             {
 
-                ParentKey oneParentLayout = new ParentKey(this.context);
-                oneParentLayout.layoutType = langAndLayout.layout;
-
+                ParentKey oneParentKey = new ParentKey(this.context);
                 ChildKey oneChildKey = new ChildKey(this.context);
+                oneParentKey.childKey = oneChildKey;
+
+
                 oneChildKey.layoutType = langAndLayout.layout;
-
-
-
 
                 int makedParentWidth = 0;
                 int makedChildWidth = 0;
@@ -254,7 +252,7 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 }
 
 
-
+                oneChildKey.keyType = Const.KeyType.NORMAL;
 
                 /// 쉬프트키 인덱스일 경우 쉬프트키 크기 적용
                 if( (y == shiftKeyIndexY && x == shiftKeyIndexX))
@@ -266,6 +264,8 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                 {
                     makedParentWidth = shift_del_number_ParentkeyWidthPX;
                     makedParentMarginLeft += (int)(Math.round((40.0 - 28.0 + 7.0) * screenWidth / 360.0));
+
+                    oneChildKey.keyType = Const.KeyType.DEL;
 
                 }
                 /// 쉬프트키 인덱스 옆쪽 열일 경우 왼쪽 여백 추가 필요
@@ -358,8 +358,6 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     String keyString = selectedLang.hwi01_qwerty01_normalKey.get(indexOfString);
                     indexOfString++;
 
-                    oneParentLayout.matrixX = x;
-                    oneParentLayout.matrixY = y;
 
                     oneChildKey.matrixX = x;
                     oneChildKey.matrixY = y;
@@ -379,21 +377,21 @@ public class KeyboardLayoutQWERTY extends KeyboardLayoutParent
                     layoutParamChild.topMargin = makedMarginChildTop;
 
 
-                    oneParentLayout.setLayoutParams(layoutParamParent);
-                    oneParentLayout.keyString = keyString;
+                    oneParentKey.setLayoutParams(layoutParamParent);
+
 
                     oneChildKey.setLayoutParams(layoutParamChild);
                     oneChildKey.setTextView(keyString);
 
                     Log.d("HWI","랜덤 색상확인");
 //                    oneChildKey.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
-//                    oneParentLayout.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
+//                    oneParentKey.setBackgroundColor(HWILib.getSharedObj().func04_getRandomColor());
 
                     Log.d("HWI","일반키 패런트 출력");
                     Log.d("HWI"," y : "+y+" x : "+x+"  makedParentWidth : "+makedParentWidth+"  makedParentHeight : "+makedParentHeight+" layoutParam.leftMargin : "+layoutParamParent.leftMargin+"  layoutParam.topMargin : "+layoutParamParent.topMargin+" keyString : "+keyString);
 
                     /// 패런트 뷰 추가
-                    addView(oneParentLayout);
+                    addView(oneParentKey);
                     addView(oneChildKey);
                 }
                 else

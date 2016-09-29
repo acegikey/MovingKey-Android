@@ -13,13 +13,15 @@ import android.widget.TextView;
 import com.movingkey.android.movingkey.R;
 import com.movingkey.android.movingkey.customLib.Const;
 import com.movingkey.android.movingkey.customLib.HWILib;
+import com.movingkey.android.movingkey.customLib.MVInputManager;
 import com.movingkey.android.movingkey.customLib.MovingKeyLib;
 
 /**
  * Created by iankim on 2016. 9. 26..
  */
-public class ChildKey extends ParentKey implements View.OnTouchListener
+public class ChildKey extends RelativeLayout implements View.OnTouchListener
 {
+    Context context;
     TextView keyTextV;
 
     int firstLeftMargin;
@@ -31,29 +33,37 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
     Const.DirectionType directionType;
 
 
+    int matrixX;
+    int matrixY;
 
+    String keyString;
+    String layoutType;
+
+    Const.KeyType keyType;
 
 
     public ChildKey(Context context)
     {
         super(context);
+        init(context);
     }
 
     public ChildKey(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        init(context);
     }
 
     public ChildKey(Context context, AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        init(context);
     }
 
-    @Override
+
     public void init(Context context)
     {
-        super.init(context);
-
+        this.context = context;
         keyTextV = new TextView(context);
         addView(keyTextV);
 
@@ -106,7 +116,7 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
     int firstEnterTouchX;
     int firstEnterTouchY;
-
+    Const.PositionType selectedPosition;
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
@@ -123,6 +133,9 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
         int changeX = 0;
         int changeY = 0;
+
+
+
 
         switch (event.getAction())
         {
@@ -172,12 +185,128 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
 
 
+                switch (ChildKey.this.directionType)
+                {
+                    case UP_DOWN:
+                        makedLeftMargin =  firstLeftMargin;
+                        break;
+                    case LEFTUP_RIGHTUP_DOWN:
+
+                        /// 역삼각형 로직 적용
+                        if(changeY < 0)
+                        {
+                            /// 키가 위로 올라갈 때는 자유롭게 이동
+
+                        }
+                        else
+                        {
+                            /// 키가 내려갈 때는 가로이동 제한
+                            makedLeftMargin =  firstLeftMargin;
+                        }
+
+                        break;
+                    case LEFT_RIGHT:
+                        makedTopMargin = firstTopMargin;
+                        break;
+                    case ALL:
+                        break;
+                }
+
+
+
+                Log.d("HWI","makedLeftMargin : "+makedLeftMargin+"  makedTopMargin : "+makedTopMargin);
+
+
+
+
+                // 이동에 따른 상태값 할당
+                if(changeX >=  moveDistanceLimit * 0.8)
+                {
+                    /// 키가 오른쪽으로 이동했음
+
+                    if(changeY >=  moveDistanceLimit * 0.8)
+                    {
+                        /// 키가 아래로 이동했음
+                        selectedPosition = Const.PositionType.RIGHT_DOWN;
+                    }
+                    else if(changeY <=  moveDistanceLimit * 0.8 * -1)
+                    {
+                        /// 키가 위로 이동했음
+                        selectedPosition = Const.PositionType.RIGHT_UP;
+                    }
+                    else
+                    {
+                        selectedPosition = Const.PositionType.RIGHT;
+                    }
+                }
+                else if(changeX <=  moveDistanceLimit * 0.8 * -1)
+                {
+                    /// 키가 왼쪽으로 이동했음
+
+                    if(changeY >=  moveDistanceLimit * 0.8)
+                    {
+                        /// 키가 아래로 이동했음
+                        selectedPosition = Const.PositionType.LEFT_DOWN;
+                    }
+                    else if(changeY <=  moveDistanceLimit * 0.8 * -1)
+                    {
+                        /// 키가 위로 이동했음
+                        selectedPosition = Const.PositionType.LEFT_UP;
+                    }
+                    else
+                    {
+                        selectedPosition = Const.PositionType.LEFT;
+                    }
+                }
+                else
+                {
+                    /// 키가 센터임
+
+                    if(changeY >= moveDistanceLimit * 0.8)
+                    {
+                        /// 키가 아래로 이동
+                        selectedPosition = Const.PositionType.DOWN;
+                    }
+                    else if(changeY <= moveDistanceLimit * 0.8 * -1)
+                    {
+                        /// 키가 위로 이동
+                        selectedPosition = Const.PositionType.UP;
+                    }
+                    else
+                    {
+                        selectedPosition = Const.PositionType.CENTER;
+                    }
+
+                }
+
+
+
+
+
                 break;
             }
             case MotionEvent.ACTION_UP:
             {
                 makedLeftMargin = ChildKey.this.firstLeftMargin;
                 makedTopMargin = ChildKey.this.firstTopMargin;
+
+                /// 이동 조건에 따른 입력 출력
+                Log.d("HWI","TEST --> selectedPosition : "+selectedPosition);
+                if(  selectedPosition == null || selectedPosition == Const.PositionType.CENTER)
+                {
+                    if(keyType == Const.KeyType.NORMAL)
+                    {
+                        MVInputManager.getSharedObj().addNormalText(keyString);
+                    }
+                    if(keyType == Const.KeyType.DEL)
+                    {
+                        MVInputManager.getSharedObj().delete();
+                    }
+
+
+                }
+
+
 
                 break;
             }
@@ -195,86 +324,6 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
 
 
         /// 움직임 제약조건 체크 필요
-        switch (ChildKey.this.directionType)
-        {
-            case UP_DOWN:
-                makedLeftMargin =  firstLeftMargin;
-                break;
-            case LEFTUP_RIGHTUP_DOWN:
-
-                /// 역삼각형 로직 적용
-                if(changeY < 0)
-                {
-                    /// 키가 위로 올라갈 때는 자유롭게 이동
-
-                }
-                else
-                {
-                    /// 키가 내려갈 때는 가로이동 제한
-                    makedLeftMargin =  firstLeftMargin;
-                }
-
-                break;
-            case LEFT_RIGHT:
-                makedTopMargin = firstTopMargin;
-                break;
-            case ALL:
-                break;
-        }
-
-
-
-        Log.d("HWI","makedLeftMargin : "+makedLeftMargin+"  makedTopMargin : "+makedTopMargin);
-
-
-        Const.PositionType selectedPosition;
-
-        // 이동에 따른 상태값 할당
-        if(changeX >=  moveDistanceLimit * 0.8)
-        {
-            /// 키가 오른쪽으로 이동했음
-
-            if(changeY >=  moveDistanceLimit * 0.8)
-            {
-                /// 키가 아래로 이동했음
-                selectedPosition = Const.PositionType.RIGHT_DOWN;
-            }
-            else if(changeY <=  moveDistanceLimit * 0.8 * -1)
-            {
-                /// 키가 위로 이동했음
-                selectedPosition = Const.PositionType.RIGHT_UP;
-            }
-            else
-            {
-                selectedPosition = Const.PositionType.RIGHT;
-            }
-        }
-        else if(changeX <=  moveDistanceLimit * 0.8)
-        {
-            /// 키가 왼쪽으로 이동했음
-
-            if(changeY >=  moveDistanceLimit * 0.8)
-            {
-                /// 키가 아래로 이동했음
-                selectedPosition = Const.PositionType.LEFT_DOWN;
-            }
-            else if(changeY <=  moveDistanceLimit * 0.8 * -1)
-            {
-                /// 키가 위로 이동했음
-                selectedPosition = Const.PositionType.LEFT_UP;
-            }
-            else
-            {
-                selectedPosition = Const.PositionType.LEFT;
-            }
-        }
-        else
-        {
-            /// 키가 센터임
-        }
-
-
-        /// 이동 조건에 따른 입력 출력
 
 
 

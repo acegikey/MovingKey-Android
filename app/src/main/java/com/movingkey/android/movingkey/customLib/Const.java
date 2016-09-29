@@ -49,4 +49,15 @@ public class Const
         DOWN,
         RIGHT_DOWN
     }
+
+
+    public enum KeyType
+    {
+        NORMAL,
+        DEL,
+        RETURN_ENTER,
+        NUMBER123,
+        SPECIAL_CHAR,
+        GLOBAL,
+    }
 }
