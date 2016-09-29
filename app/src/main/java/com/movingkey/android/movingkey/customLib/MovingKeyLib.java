@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
@@ -43,7 +44,7 @@ public class MovingKeyLib
 
 
 
-
+    public InputConnection inputConnection;
 
 
 

@@ -203,7 +203,16 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
             case LEFTUP_RIGHTUP_DOWN:
 
                 /// 역삼각형 로직 적용
+                if(changeY < 0)
+                {
+                    /// 키가 위로 올라갈 때는 자유롭게 이동
 
+                }
+                else
+                {
+                    /// 키가 내려갈 때는 가로이동 제한
+                    makedLeftMargin =  firstLeftMargin;
+                }
 
                 break;
             case LEFT_RIGHT:
@@ -213,7 +222,64 @@ public class ChildKey extends ParentKey implements View.OnTouchListener
                 break;
         }
 
+
+
         Log.d("HWI","makedLeftMargin : "+makedLeftMargin+"  makedTopMargin : "+makedTopMargin);
+
+
+        Const.PositionType selectedPosition;
+
+        // 이동에 따른 상태값 할당
+        if(changeX >=  moveDistanceLimit * 0.8)
+        {
+            /// 키가 오른쪽으로 이동했음
+
+            if(changeY >=  moveDistanceLimit * 0.8)
+            {
+                /// 키가 아래로 이동했음
+                selectedPosition = Const.PositionType.RIGHT_DOWN;
+            }
+            else if(changeY <=  moveDistanceLimit * 0.8 * -1)
+            {
+                /// 키가 위로 이동했음
+                selectedPosition = Const.PositionType.RIGHT_UP;
+            }
+            else
+            {
+                selectedPosition = Const.PositionType.RIGHT;
+            }
+        }
+        else if(changeX <=  moveDistanceLimit * 0.8)
+        {
+            /// 키가 왼쪽으로 이동했음
+
+            if(changeY >=  moveDistanceLimit * 0.8)
+            {
+                /// 키가 아래로 이동했음
+                selectedPosition = Const.PositionType.LEFT_DOWN;
+            }
+            else if(changeY <=  moveDistanceLimit * 0.8 * -1)
+            {
+                /// 키가 위로 이동했음
+                selectedPosition = Const.PositionType.LEFT_UP;
+            }
+            else
+            {
+                selectedPosition = Const.PositionType.LEFT;
+            }
+        }
+        else
+        {
+            /// 키가 센터임
+        }
+
+
+        /// 이동 조건에 따른 입력 출력
+
+
+
+
+
 
         params.leftMargin = makedLeftMargin;
         params.topMargin = makedTopMargin;

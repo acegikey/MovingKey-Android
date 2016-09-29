@@ -43,6 +43,8 @@ import java.util.ArrayList;
 
 /**
  * Created by iankim on 2016. 8. 10..
+ *
+ *  사용자가 파일로 저장하는 데이터
  */
 public class MovingKeySetting
 {

@@ -35,4 +35,18 @@ public class Const
         LEFTUP_RIGHTUP_DOWN,
         ALL
     }
+
+
+    public enum PositionType
+    {
+        LEFT_UP,
+        UP,
+        RIGHT_UP,
+        LEFT,
+        CENTER,
+        RIGHT,
+        LEFT_DOWN,
+        DOWN,
+        RIGHT_DOWN
+    }
 }
