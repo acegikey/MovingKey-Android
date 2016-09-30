@@ -44,7 +44,7 @@ public class ParentKey extends RelativeLayout implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
-        if(childKey.keyType == Const.KeyType.DEL)
+        if(childKey.keyType == Const.KeyType.NORMAL)
         {
             MVInputManager.getSharedObj().addNormalText(childKey.keyString);
         }

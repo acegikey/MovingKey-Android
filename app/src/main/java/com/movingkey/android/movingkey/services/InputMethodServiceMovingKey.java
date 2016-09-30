@@ -21,7 +21,7 @@ import com.movingkey.android.movingkey.keyboardLayout.KeyboardContainerLayout;
         4. MovingKeyLib --> 키보드 공통 사용 라이브러리
         5. InputMethodServiceMovingKey --> 키보드를 만들 때 생기는 최초 진입점. KeyboardContainerLayout 를 불러와서 표현한다.
         6. KeyboardContainerLayout --> 설정에 맞는 레이아웃을 찾아서 뷰에 셋팅한다.
-
+        7. MVInputManager --> 일반키보드 관련 모든 명령 및 제어
 */
 
 
@@ -34,7 +34,6 @@ public class InputMethodServiceMovingKey extends InputMethodService
     {
         super.onCreate();
         Log.d("HWI","onCreate 호출 확인 --> 키보드 나올 때 01");
-
 
     }
 
@@ -69,7 +68,7 @@ public class InputMethodServiceMovingKey extends InputMethodService
         Log.d("HWI","onCreateInputView 호출 확인 --> 키보드 나올 때 05 ---> 정석은 여기서 키보드 뷰를 리턴한다");
 
         /// 인풋커넥션 삽입 --> 키보드 사용시 필요함
-        MVInputManager.getSharedObj().ipc = getCurrentInputConnection();
+        MVInputManager.getSharedObj().ims = this;
 
 
         LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
